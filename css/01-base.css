@@ -1,0 +1,163 @@
+/* =====================================================================
+   BASE · identidad de DRONES DEL PAMPA (no la de Dragur):
+   blanco protagonista, azul Pampa #0B3D9E, verde campo #6DB72E,
+   Poppins (la letra del logo) + Inter. Colores SOLO acá.
+   ===================================================================== */
+:root{
+  --blanco:#ffffff;
+  --niebla:#f3f6fb;
+  --niebla-2:#e8eef8;
+  --linea:#dfe6f1;
+  --linea-2:#c9d4e6;
+  --tinta:#0a1b3d;
+  --tinta-2:#4a5a78;
+  --tinta-3:#8392ad;
+  --azul:#0b3d9e;
+  --azul-2:#1d60b8;
+  --azul-osc:#072a6e;
+  --noche:#05153a;
+  --cielo:#3c82cf;
+  --verde:#6db72e;
+  --verde-2:#5ca829;
+  --verde-osc:#3f8a1f;
+  --verde-claro:#9bdb63;
+  --ambar:#f5b53d;
+  --rojo:#e5484d;
+  --wa:#25d366;
+  /* Versión 2: fondo con un poco de color (no todo blanco) y sombras en capas, como la luz real */
+  --fondo-pagina:#eef3f9;
+  --fondo-pagina-2:#e3ebf6;
+  --fondo-tarjeta:#ffffff;
+  --verde-suave:#e4f4d4;
+  --sombra:0 1px 2px rgba(10,27,61,.05),0 4px 12px -2px rgba(10,27,61,.06),0 20px 44px -18px rgba(11,61,158,.22);
+  --sombra-2:0 2px 4px rgba(10,27,61,.05),0 12px 28px -8px rgba(10,27,61,.10),0 46px 90px -34px rgba(7,42,110,.42);
+  --sombra-verde:0 14px 34px -14px rgba(109,183,46,.65);
+  --brillo:inset 0 1px 0 rgba(255,255,255,.9);
+  --borde-luz:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.15));
+  --radio:28px;
+  --radio-chico:16px;
+  --f-titulo:'Poppins','Segoe UI',system-ui,sans-serif;
+  --f-texto:'Inter','Segoe UI',system-ui,sans-serif;
+  --ancho:1240px;
+  --nav-alto:78px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  /* compatibilidad con el panel */
+  --papel:#f3f6fb; --texto:#0a1b3d; --texto-2:#4a5a78; --texto-3:#8392ad; --fondo:#ffffff; --fondo-2:#ffffff; --panel:#ffffff; --panel-2:#f3f6fb;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+body{background:var(--fondo-pagina);color:var(--tinta);font-family:var(--f-texto);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.bloqueado{overflow:hidden}
+main,.pie{overflow-x:clip}
+img,video,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;font-size:16px;color:inherit}
+::selection{background:var(--verde);color:#fff}
+.campo,.grilla-form > *,[class*="-in"] > *{min-width:0}
+
+.contenedor{width:min(var(--ancho),100% - 40px);margin-inline:auto}
+.bloque{position:relative;padding:clamp(70px,9vw,120px) 0}
+.bloque.niebla{background:linear-gradient(180deg,var(--fondo-pagina-2),var(--fondo-pagina))}
+.bloque.blanco{background:var(--blanco)}
+.bloque.noche{background:radial-gradient(80% 90% at 85% 10%,rgba(60,130,207,.35),transparent 60%),linear-gradient(160deg,var(--noche),var(--azul-osc) 60%,var(--azul));color:#fff}
+.noche .sub,.noche .texto-2{color:#c3d3f0}
+
+/* --- Títulos --- */
+.etiqueta{display:inline-flex;align-items:center;gap:10px;font:600 12.5px/1 var(--f-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--verde-osc)}
+.etiqueta i{width:8px;height:8px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 5px rgba(109,183,46,.18)}
+.noche .etiqueta{color:var(--verde-claro)}
+.titulo{font:700 clamp(32px,4.6vw,60px)/1.06 var(--f-titulo);letter-spacing:-.03em;margin-top:16px}
+.titulo b{color:var(--azul);font-weight:800}
+.titulo em{font-style:normal;color:var(--verde-osc)}
+.noche .titulo b{color:var(--verde-claro)}
+.titulo.chico{font-size:clamp(28px,3.2vw,42px)}
+.sub{color:var(--tinta-2);font-size:clamp(16px,1.3vw,18.5px);max-width:620px;margin-top:18px}
+.cabecera{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 40px;flex-wrap:wrap;margin-bottom:44px}
+.texto-2{color:var(--tinta-2)}
+.pal{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.pal > span{display:inline-block;will-change:transform}
+
+/* --- Botones --- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 26px;border-radius:999px;
+  font:600 15px/1 var(--f-texto);white-space:nowrap;overflow:hidden;isolation:isolate;transition:transform .4s var(--ease),box-shadow .4s var(--ease),background .3s,color .3s,border-color .3s}
+.btn svg{width:19px;height:19px;flex:none}
+.btn::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s var(--ease)}
+.btn:hover::after{transform:translateX(120%)}
+.btn-azul{background:var(--azul);color:#fff;box-shadow:0 14px 34px -12px rgba(11,61,158,.6)}
+.btn-azul:hover{background:var(--azul-2);transform:translateY(-2px)}
+.btn-verde{background:var(--verde);color:#fff;box-shadow:0 14px 34px -12px rgba(109,183,46,.65)}
+.btn-verde:hover{background:var(--verde-2);transform:translateY(-2px)}
+.btn-borde{border:1.5px solid var(--linea-2);color:var(--tinta);background:#fff}
+.btn-borde:hover{border-color:var(--azul);color:var(--azul)}
+.btn-blanco{background:#fff;color:var(--azul)}
+.btn-vidrio{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(10px)}
+.btn-vidrio:hover{background:rgba(255,255,255,.24)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 14px 34px -12px rgba(37,211,102,.6)}
+.btn-chico{height:42px;padding:0 18px;font-size:14px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.enlace{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--azul)}
+.enlace svg{width:18px;height:18px;transition:transform .4s var(--ease)}
+.enlace:hover svg{transform:translateX(5px)}
+
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font:600 12px/1 var(--f-texto);background:rgba(109,183,46,.13);color:var(--verde-osc)}
+.chip.azul{background:rgba(11,61,158,.09);color:var(--azul)}
+.chip.ambar{background:rgba(245,181,61,.18);color:#9a6400}
+.chip.gris{background:var(--niebla-2);color:var(--tinta-2)}
+.chip svg{width:14px;height:14px}
+
+.precio{font:700 22px/1 var(--f-titulo);letter-spacing:-.02em;color:var(--tinta)}
+.precio small{font:600 12px/1 var(--f-texto);color:var(--tinta-3);margin-right:4px;letter-spacing:.04em}
+.precio-antes{font:500 14px/1 var(--f-texto);color:var(--tinta-3);text-decoration:line-through;margin-left:8px}
+.precio-consulta{font-size:17px !important;color:var(--azul) !important}
+.noche .precio{color:#fff}
+
+/* --- Aparecer al bajar (sin JS se ve igual) --- */
+/* «.visto» = ya apareció: sin esto, al terminar la animación el bloque volvía a correrse y se encimaba (12/11/2026) */
+html.anim [data-aparece]:not(.visto){opacity:0;transform:translateY(36px)}
+html.anim [data-aparece="izq"]:not(.visto){transform:translateX(-46px)}
+html.anim [data-aparece="der"]:not(.visto){transform:translateX(46px)}
+html.anim [data-aparece="zoom"]:not(.visto){transform:scale(.93)}
+
+/* --- Ventanas --- */
+.velo{position:fixed;inset:0;z-index:900;background:rgba(5,21,58,.5);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+.velo.abierto{opacity:1;pointer-events:auto}
+.modal{position:fixed;z-index:901;left:50%;top:50%;width:min(1000px,calc(100% - 28px));max-height:calc(100dvh - 40px);overflow:auto;background:#fff;border-radius:30px;
+  box-shadow:var(--sombra-2);transform:translate(-50%,-46%) scale(.97);opacity:0;pointer-events:none;transition:transform .55s var(--ease),opacity .4s var(--ease);overscroll-behavior:contain}
+.modal.abierto{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
+.modal.chico{width:min(560px,calc(100% - 28px))}
+.modal-cerrar{position:sticky;top:14px;float:right;margin:14px 14px -60px 0;z-index:3;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;border:1px solid var(--linea);box-shadow:0 6px 20px -8px rgba(0,0,0,.25);transition:transform .3s var(--ease)}
+.modal-cerrar:hover{transform:rotate(90deg)}
+.modal-cerrar svg{width:20px;height:20px}
+
+.avisos{position:fixed;z-index:1200;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.aviso{pointer-events:auto;display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:16px;background:var(--tinta);color:#fff;font-weight:600;font-size:15px;box-shadow:0 20px 50px -10px rgba(0,0,0,.45);animation:avisoEntra .5s var(--ease)}
+.aviso svg{width:22px;height:22px;color:var(--verde-claro);flex:none}
+.aviso.error svg{color:#ff8a8a}
+@keyframes avisoEntra{from{opacity:0;transform:translateY(20px) scale(.96)}}
+@media (max-width:820px){.avisos{bottom:96px}}
+
+/* --- Formularios --- */
+.campo{display:flex;flex-direction:column;gap:7px}
+.campo label{font:600 13px/1.2 var(--f-texto);color:var(--tinta-2)}
+.campo input,.campo select,.campo textarea{width:100%;min-height:50px;padding:12px 16px;border-radius:14px;background:var(--niebla);border:1.5px solid transparent;color:var(--tinta);outline:none;transition:border-color .2s,background .2s}
+.campo textarea{min-height:110px;resize:vertical}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--azul);background:#fff}
+.campo .error{color:var(--rojo);font-size:13px;display:none}
+.campo.mal input,.campo.mal select,.campo.mal textarea{border-color:var(--rojo)}
+.campo.mal .error{display:block}
+.grilla-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grilla-form .ancho{grid-column:1/-1}
+@media (max-width:640px){.grilla-form{grid-template-columns:1fr}}
+.opciones{display:flex;flex-wrap:wrap;gap:8px}
+.opcion input{position:absolute;opacity:0}
+.opcion span{display:inline-flex;height:42px;align-items:center;gap:8px;padding:0 16px;border-radius:999px;border:1.5px solid var(--linea-2);font:600 14px var(--f-texto);cursor:pointer;transition:all .3s;background:#fff}
+.opcion input:checked + span{background:var(--azul);border-color:var(--azul);color:#fff}
+.opcion input:focus-visible + span{outline:2px solid var(--verde);outline-offset:2px}
+
+:focus-visible{outline:2px solid var(--verde);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}

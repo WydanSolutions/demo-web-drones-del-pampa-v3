@@ -1,0 +1,53 @@
+/* =====================================================================
+   CURSOS: listado y página del curso con la inscripción al costado.
+   ===================================================================== */
+.cursos-lista{display:grid;gap:22px}
+.curso{display:grid;grid-template-columns:minmax(260px,.85fr) 1.4fr;border-radius:30px;overflow:hidden;background:#fff;border:1px solid var(--linea);transition:transform .6s var(--ease),box-shadow .6s}
+.curso:hover{transform:translateY(-6px);box-shadow:var(--sombra-2)}
+.curso-img{position:relative;min-height:280px;overflow:hidden}
+.curso-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.curso:hover .curso-img img{transform:scale(1.06)}
+.curso-fecha{position:absolute;top:18px;left:18px;width:70px;padding:12px 0;border-radius:18px;background:#fff;text-align:center;box-shadow:0 10px 24px -10px rgba(0,0,0,.4)}
+.curso-fecha b{display:block;font:800 30px/1 var(--f-titulo);color:var(--azul)}
+.curso-fecha span{display:block;font:700 11px var(--f-texto);text-transform:uppercase;letter-spacing:.12em;color:var(--verde-osc);margin-top:3px}
+.curso-info{display:flex;flex-direction:column;padding:clamp(22px,3vw,36px)}
+.curso-chips{display:flex;flex-wrap:wrap;gap:6px}
+.curso-info h3{font:700 clamp(22px,2.3vw,30px)/1.15 var(--f-titulo);letter-spacing:-.02em;margin:14px 0 8px}
+.curso-info > p{color:var(--tinta-2)}
+.curso-abajo{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:22px 0}
+.cupos{flex:1;min-width:200px}
+.cupos-barra{height:8px;border-radius:8px;background:var(--niebla-2);overflow:hidden}
+.cupos-barra i{display:block;height:100%;width:var(--p);border-radius:8px;background:linear-gradient(90deg,var(--azul),var(--verde))}
+.cupos span{display:block;font-size:13.5px;color:var(--tinta-2);margin-top:8px}
+.cupos span b{color:var(--azul)}
+.cupos span.lleno{color:#9a6400}
+.curso-pie{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+@media (max-width:760px){.curso{grid-template-columns:1fr}.curso-img{min-height:200px;aspect-ratio:16/10}}
+
+.cm-hero{position:relative;min-height:min(70svh,620px);display:flex;align-items:flex-end;overflow:hidden;color:#fff}
+.cm-hero > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cm-velo{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,21,58,.95),rgba(5,21,58,.7) 50%,rgba(5,21,58,.55))}
+.cm-hero-in{position:relative;padding:calc(var(--nav-alto) + 40px) 0 50px}
+.cm-hero-in h1{font:700 clamp(34px,5vw,66px)/1.05 var(--f-titulo);letter-spacing:-.03em;margin:16px 0 10px;max-width:900px}
+.cm-hero-in > p{color:#d5e1f5;font-size:18px;max-width:640px}
+.cm-hero-in .cuenta{margin-top:26px}
+.cm-hero .cuenta div{background:rgba(255,255,255,.12);backdrop-filter:blur(8px)}
+.cm-in{display:grid;grid-template-columns:1fr 410px;gap:clamp(30px,5vw,60px);align-items:start}
+.cm-datos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cm-datos div{position:relative;padding:18px 18px 18px 56px;border-radius:18px;background:var(--niebla)}
+.cm-datos svg{position:absolute;left:18px;top:20px;width:22px;height:22px;color:var(--azul)}
+.cm-datos small{display:block;font-size:12px;color:var(--tinta-3)}
+.cm-datos b{display:block;font-size:15px;line-height:1.35;margin-top:2px}
+.cm-temario,.cm-lista{list-style:none;display:flex;flex-direction:column;gap:6px}
+.cm-temario li{display:flex;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--linea);font-size:16px}
+.cm-temario b{font:800 15px var(--f-titulo);color:var(--verde-osc)}
+.cm-lista li{display:flex;gap:10px;align-items:flex-start;color:var(--tinta-2);font-size:15px}
+.cm-lista svg{width:19px;height:19px;color:var(--verde-osc);flex:none;margin-top:2px}
+.cm-dos{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cm-lado{position:sticky;top:96px;padding:26px;border-radius:28px;background:#fff;border:1px solid var(--linea);box-shadow:var(--sombra-2)}
+.cm-lado h3{font:700 20px var(--f-titulo);margin:4px 0 14px}
+.cm-precio{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px;margin-bottom:14px;border-bottom:1px solid var(--linea)}
+.cm-precio > small{width:100%;font:600 12px var(--f-texto);text-transform:uppercase;letter-spacing:.12em;color:var(--tinta-3)}
+.cm-precio .precio{font-size:34px}
+.cm-form{display:grid;gap:12px}
+@media (max-width:960px){.cm-in{grid-template-columns:1fr}.cm-lado{position:static}.cm-dos,.cm-datos{grid-template-columns:1fr}}

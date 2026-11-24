@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es-UY">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Drones del Pampa · Rivera — Drones agrícolas DJI</title>
+  <meta name="description" content="Drones del Pampa, sucursal oficial Dragur en Rivera: drones agrícolas DJI Agras, repuestos originales, servicio técnico y cursos para pilotos.">
+  <meta name="theme-color" content="#0b3d9e">
+  <meta property="og:title" content="Drones del Pampa · Rivera">
+  <meta property="og:description" content="Drones agrícolas DJI, repuestos, servicio técnico oficial y cursos para pilotos en Rivera.">
+  <meta property="og:url" content="https://wydansolutions.github.io/demo-web-drones-del-pampa-v3/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://wydansolutions.github.io/demo-web-drones-del-pampa-v3/portada.jpg">
+  <link rel="icon" href="media/marca/dragur-icono.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/01-base.css?v=202611241851">
+  <link rel="stylesheet" href="css/02-marco.css?v=202611241851">
+  <link rel="stylesheet" href="css/03-inicio.css?v=202611241851">
+  <link rel="stylesheet" href="css/03b-portadas.css?v=202611241851">
+  <link rel="stylesheet" href="css/04-drones.css?v=202611241851">
+  <link rel="stylesheet" href="css/04b-visor.css?v=202611241851">
+  <link rel="stylesheet" href="css/05-tienda.css?v=202611241851">
+  <link rel="stylesheet" href="css/06-cursos.css?v=202611241851">
+  <link rel="stylesheet" href="css/06b-festejo.css?v=202611241851">
+  <link rel="stylesheet" href="css/07-paginas.css?v=202611241851">
+  <link rel="stylesheet" href="css/07b-dinacia.css?v=202611241851">
+  <link rel="stylesheet" href="css/08-admin.css?v=202611241851">
+  <link rel="stylesheet" href="css/09-premium.css?v=202611241851">
+  <link rel="stylesheet" href="css/09b-ajustes.css?v=202611241851">
+  <link rel="stylesheet" href="css/09c-movimiento.css?v=202611241851">
+  <link rel="stylesheet" href="css/10-bloques.css?v=202611241851">
+  <link rel="stylesheet" href="css/10b-novedades.css?v=202611241851">
+  <link rel="stylesheet" href="css/11-estudio.css?v=202611241851">
+  <link rel="stylesheet" href="css/11b-estudio-modulos.css?v=202611241851">
+</head>
+<body>
+  <div id="cargador" class="cargador"></div>
+  <div id="telon" class="telon" aria-hidden="true">
+    <svg class="telon-dron" viewBox="440 182 790 392"><defs><linearGradient id="tel-ve" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9BDB63"/><stop offset="1" stop-color="#6DB72E"/></linearGradient></defs>
+      <g fill="url(#tel-ve)"><g class="dp-helice"><path d="M455 215 Q572 199 690 215 Q572 231 455 215 Z"/></g><g class="dp-helice"><path d="M976 215 Q1095 199 1215 215 Q1095 231 976 215 Z"/></g>
+      <rect x="561" y="201" width="18" height="60" rx="3"/><rect x="1087" y="201" width="18" height="60" rx="3"/><rect x="547" y="254" width="571" height="24" rx="3"/>
+      <path d="M736 300 C736 236 776 201 834 201 C892 201 932 236 932 300 L921 318 Q834 342 747 318 Z"/></g></svg>
+    <div class="telon-txt"></div>
+  </div>
+
+  <header id="nav" class="nav"></header>
+  <main id="vista"></main>
+
+  <nav id="barra" class="barra" aria-label="Menú"></nav>
+  <div id="velo-mas" class="velo" onclick="cerrarMas()"></div>
+  <div id="mas" class="mas"></div>
+
+  <a class="wa-flotante" id="wa-flotante" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
+
+  <div id="velo-carrito" class="velo" onclick="cerrarCarrito()"></div>
+  <aside id="carrito" class="carrito" aria-label="Pedido"></aside>
+  <div id="velo" class="velo" onclick="cerrarModal()"></div>
+  <div id="modal" class="modal" role="dialog" aria-modal="true"></div>
+  <div id="velo-filtros" class="velo" onclick="document.body.classList.remove('filtros-abiertos')"></div>
+  <div id="admin" class="admin"></div>
+  <div id="avisos" class="avisos"></div>
+
+  <!-- Animaciones (si no cargan, la página funciona igual, sin movimiento) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+  <script src="js/00-logo.js?v=202611241851"></script>
+  <script src="js/00b-fondos.js?v=202611241851"></script>
+  <script src="js/01-contenido.js?v=202611241851"></script>
+  <script src="js/01b-contenido-v3.js?v=202611241851"></script>
+  <script src="js/02-datos.js?v=202611241851"></script>
+  <script src="js/03-idioma.js?v=202611241851"></script>
+  <script src="js/04-util.js?v=202611241851"></script>
+  <script src="js/04b-util-v3.js?v=202611241851"></script>
+  <script src="js/05-app.js?v=202611241851"></script>
+  <script src="js/06-inicio.js?v=202611241851"></script>
+  <script src="js/06b-portadas.js?v=202611241851"></script>
+  <script src="js/07-drones.js?v=202611241851"></script>
+  <script src="js/07b-visor.js?v=202611241851"></script>
+  <script src="js/07c-explorar.js?v=202611241851"></script>
+  <script src="js/08-tienda.js?v=202611241851"></script>
+  <script src="js/09-cursos.js?v=202611241851"></script>
+  <script src="js/09b-festejo.js?v=202611241851"></script>
+  <script src="js/10-servicio.js?v=202611241851"></script>
+  <script src="js/11-nosotros.js?v=202611241851"></script>
+  <script src="js/11b-dinacia.js?v=202611241851"></script>
+  <script src="js/12-animaciones.js?v=202611241851"></script>
+  <script src="js/12b-premium.js?v=202611241851"></script>
+  <script src="js/12c-dron-guia.js?v=202611241851"></script>
+  <script src="js/13-admin.js?v=202611241851"></script>
+  <script src="js/14-admin-editor.js?v=202611241851"></script>
+  <!-- Versión 3 (24/11/2026): páginas por bloques, Estudio, novedades, link en la bio, Instagram, bandeja, estadísticas y Drive -->
+  <script src="js/16-bloques.js?v=202611241851"></script>
+  <script src="js/16b-bloques-contenido.js?v=202611241851"></script>
+  <script src="js/16c-bloques-venta.js?v=202611241851"></script>
+  <script src="js/16d-prototipos.js?v=202611241851"></script>
+  <script src="js/17-estudio.js?v=202611241851"></script>
+  <script src="js/17b-estudio-paginas.js?v=202611241851"></script>
+  <script src="js/17c-estudio-campos.js?v=202611241851"></script>
+  <script src="js/17d-vista.js?v=202611241851"></script>
+  <script src="js/18-novedades.js?v=202611241851"></script>
+  <script src="js/18b-links.js?v=202611241851"></script>
+  <script src="js/18c-instagram.js?v=202611241851"></script>
+  <script src="js/19-bandeja.js?v=202611241851"></script>
+  <script src="js/19b-estadisticas.js?v=202611241851"></script>
+  <script src="js/19c-drive.js?v=202611241851"></script>
+  <script src="js/19d-archivos.js?v=202611241851"></script>
+  <script src="js/15-arranque.js?v=202611241851"></script>
+</body>
+</html>

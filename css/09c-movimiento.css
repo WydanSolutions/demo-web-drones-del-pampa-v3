@@ -1,0 +1,123 @@
+/* =====================================================================
+   DRON QUE ACOMPAÑA, CAMPO QUE SE FUMIGA Y «CONOCELO POR DENTRO»
+   (12c-dron-guia.js · 07c-explorar.js)
+   ===================================================================== */
+/* --- Dron que acompaña --- */
+.dron-guia{position:fixed;left:0;top:0;z-index:650;width:150px;pointer-events:none;opacity:0;transition:opacity .5s ease;will-change:transform}
+.dron-guia.ver{opacity:1}
+.dron-guia img{position:relative;width:100%;filter:drop-shadow(0 6px 6px rgba(0,0,0,.25));animation:dgFlota 3s ease-in-out infinite}
+.dg-sombra{position:absolute;left:30%;top:70%;width:60%;height:40%;border-radius:50%;background:radial-gradient(closest-side,rgba(5,21,58,.28),transparent);filter:blur(4px);animation:dgSombra 3s ease-in-out infinite}
+@keyframes dgFlota{50%{transform:scale(1.04)}}
+@keyframes dgSombra{50%{transform:scale(.9);opacity:.7}}
+@media (max-width:820px){.dron-guia{width:96px}}
+
+/* --- Campo para fumigar: se completa arrastrando el dron por la ruta --- */
+.campo-sec{position:relative}
+.campo-in{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,4vw,60px);align-items:center}
+.campo-datos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.campo-datos div{padding:14px 16px;border-radius:18px;background:var(--fondo-tarjeta);border:1px solid var(--linea);box-shadow:var(--sombra)}
+.campo-datos b{display:block;font:800 clamp(22px,2.4vw,30px)/1.1 var(--f-titulo);color:var(--azul);font-variant-numeric:tabular-nums}
+.campo-datos small{font-size:12.5px;color:var(--tinta-2)}
+.campo-listo{display:none;align-items:center;gap:10px;margin-top:14px;padding:12px 16px;border-radius:16px;background:var(--verde-suave);color:var(--verde-osc);font-size:14.5px}
+.campo-listo svg{width:24px;height:24px;flex:none;padding:4px;border-radius:50%;background:var(--verde);color:#fff}
+.campo-listo b{color:var(--tinta)}
+.terminado .campo-listo{display:flex}
+.campo-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.campo-btns .btn svg{width:14px;height:14px}
+.campo-nota{margin-top:12px;font-size:12.5px;color:var(--tinta-3)}
+.campo-mapa{position:relative;border-radius:30px;padding:10px;background:var(--fondo-tarjeta);box-shadow:var(--sombra-2);user-select:none;-webkit-user-select:none}
+.campo-mapa svg{width:100%;height:auto;display:block;border-radius:24px}
+.cf-seco{fill:#c9a960}
+.cf-verde{fill:#4f9a2a}
+.cf-surco{stroke:rgba(0,0,0,.14);stroke-width:2}
+.cf-ruta{fill:none;stroke:rgba(255,255,255,.75);stroke-width:2.5;stroke-dasharray:7 7;animation:cfRuta 1.2s linear infinite}
+@keyframes cfRuta{to{stroke-dashoffset:-14}}
+.terminado .cf-ruta{opacity:.25;animation:none}
+.cf-meta circle{fill:#fff;stroke:var(--verde);stroke-width:3}.cf-meta path{fill:none;stroke:var(--verde-osc);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.cf-poste line{stroke:#333;stroke-width:2}.cf-poste circle{fill:var(--rojo)}
+.cf-dron{position:absolute;left:0;top:0;width:clamp(96px,13vw,170px);cursor:grab;touch-action:none;will-change:transform;outline:none}
+.cf-dron.agarrado{cursor:grabbing}
+.cf-dron::before{content:"";position:absolute;inset:18%;border-radius:50%;border:3px solid rgba(255,255,255,.9);box-shadow:0 0 0 6px rgba(155,219,99,.45);animation:cfAgarrar 1.6s ease-out infinite;pointer-events:none}
+.cf-dron.agarrado::before,.terminado .cf-dron::before{display:none}
+.cf-dron:focus-visible::before{display:block;border-color:var(--verde)}
+@keyframes cfAgarrar{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.25);opacity:0}}
+.cf-dron img{position:relative;width:100%;filter:drop-shadow(0 8px 8px rgba(0,0,0,.35));pointer-events:none;transition:transform .3s var(--ease)}
+.cf-dron.agarrado img{transform:scale(1.08)}
+.cf-sombra{position:absolute;left:35%;top:75%;width:60%;height:40%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.35),transparent);filter:blur(4px);pointer-events:none}
+.cf-rocio{position:absolute;left:10%;right:10%;top:40%;height:80%;border-radius:50%;opacity:0;transition:opacity .3s;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(235,248,255,.75),rgba(235,248,255,.25) 60%,transparent);filter:blur(3px)}
+.cf-dron.fumiga .cf-rocio{opacity:1;animation:cfRocio .5s ease-in-out infinite alternate}
+@keyframes cfRocio{to{transform:scale(1.12);opacity:.75}}
+.cf-pista{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;white-space:nowrap;
+  background:rgba(5,21,58,.82);color:#fff;font:600 13.5px var(--f-texto);box-shadow:0 10px 24px -10px rgba(0,0,0,.6);pointer-events:none;transition:opacity .4s,transform .4s var(--ease)}
+.cf-pista.oculta{opacity:0;transform:translateX(-50%) translateY(10px)}
+.cf-mano{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--verde)}
+.cf-mano svg{width:13px;height:13px;animation:cfMano 1.2s ease-in-out infinite}
+@keyframes cfMano{50%{transform:translateX(3px)}}
+@media (max-width:820px){
+  .campo-in{grid-template-columns:1fr;gap:16px}
+  .campo-datos{margin-top:14px;gap:8px}
+  .campo-datos div{padding:10px 12px;border-radius:14px}
+  .campo-mapa{border-radius:22px;padding:6px;order:-1}
+  .campo-txt{display:contents}
+  .campo-txt > .etiqueta{order:-3}.campo-txt > .titulo{order:-2;margin-top:0}
+  .campo-txt > .sub{order:-1;margin-top:0}
+  .cf-pista{font-size:12px;padding:8px 12px;bottom:14px}
+}
+
+/* --- Conocelo por dentro --- */
+.ex-in{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(24px,4vw,60px);align-items:center}
+.ex-lista{list-style:none;display:grid;gap:6px;margin-top:22px}
+.ex-lista button{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:16px;color:#cddbf3;text-align:left;border:1px solid transparent;transition:all .3s var(--ease)}
+.ex-lista span{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font:700 13px var(--f-titulo);background:rgba(255,255,255,.1);color:#fff}
+.ex-lista svg{width:20px;height:20px;color:var(--verde-claro);flex:none}
+.ex-lista b{font:600 15px var(--f-texto)}
+.ex-lista button:hover,.ex-lista button.act{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff}
+.ex-lista button.act span{background:var(--verde)}
+.ex-visor{position:relative;perspective:1200px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ex-escena{position:relative;aspect-ratio:1.25;border-radius:32px;transform-style:preserve-3d;
+  background:radial-gradient(70% 70% at 50% 40%,rgba(120,170,240,.28),rgba(5,21,58,0) 70%);cursor:grab}
+.ex-brillo{position:absolute;left:20%;top:5%;width:60%;height:60%;border-radius:50%;background:radial-gradient(closest-side,rgba(190,220,255,.35),transparent);filter:blur(10px);pointer-events:none}
+.ex-piso{position:absolute;left:22%;right:22%;bottom:12%;height:12%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.5),transparent);filter:blur(8px)}
+/* cuadrado como la foto (1080 × 1080), así los puntos caen en su parte; más grande que la caja porque la foto tiene mucho aire */
+.ex-dron{position:absolute;top:-22%;bottom:-16%;left:50%;aspect-ratio:1;transform:translateX(-50%) translateZ(40px)}
+.ex-dron img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;pointer-events:none;filter:drop-shadow(0 30px 26px rgba(0,0,0,.5))}
+.ex-dron img.act{opacity:1}
+.ex-puntos{position:absolute;inset:0;transition:opacity .4s}
+.explorar.girado .ex-puntos{opacity:0;pointer-events:none}
+.ex-punto{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;display:grid;place-items:center;transform:translateZ(30px)}
+.ex-punto span{position:relative;z-index:1;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--azul);font:800 12px var(--f-titulo);box-shadow:0 4px 12px rgba(0,0,0,.4);transition:transform .3s var(--ease),background .3s,color .3s}
+.ex-punto::before{content:"";position:absolute;inset:0;border-radius:50%;background:rgba(155,219,99,.45);animation:exLatido 2s ease-out infinite}
+.ex-punto:hover span,.ex-punto.act span{background:var(--verde);color:#fff;transform:scale(1.18)}
+@keyframes exLatido{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.ex-ayuda{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font:600 12.5px var(--f-texto);color:#9fb6dc}
+.ex-ayuda svg{width:14px;height:14px}.ex-ayuda svg:first-child{transform:scaleX(-1)}
+.ex-volver{position:absolute;right:12px;top:12px;display:none;align-items:center;gap:6px;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);color:#fff;font:600 13px var(--f-texto)}
+.ex-volver svg{width:16px;height:16px}
+.explorar.girado .ex-volver{display:inline-flex}
+.ex-ficha{position:absolute;left:4%;right:4%;bottom:6%;display:grid;grid-template-columns:120px 1fr;gap:14px;padding:12px;border-radius:22px;color:var(--tinta);
+  background:rgba(255,255,255,.96);box-shadow:0 30px 60px -20px rgba(0,0,0,.6);opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .35s,transform .45s var(--ease)}
+.ex-ficha.ver{opacity:1;transform:none;pointer-events:auto}
+.exf-foto{border-radius:14px;overflow:hidden;aspect-ratio:1;background:#111}
+.exf-foto img{width:100%;height:100%;object-fit:cover}
+.exf-txt small{font:700 11px var(--f-texto);letter-spacing:.12em;color:var(--verde-osc)}
+.exf-txt b{display:block;font:700 18px/1.2 var(--f-titulo);margin:2px 0 4px}
+.exf-txt p{font-size:13.5px;color:var(--tinta-2);line-height:1.5}
+.exf-nav{display:flex;gap:6px;margin-top:8px}
+.exf-nav button{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--linea-2)}
+.exf-nav button:first-child svg{transform:scaleX(-1)}
+.exf-nav svg{width:16px;height:16px}
+.exf-cerrar{position:absolute;right:10px;top:10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--niebla)}
+.exf-cerrar svg{width:14px;height:14px}
+@media (max-width:900px){
+  .ex-in{grid-template-columns:1fr}
+  .ex-lista{grid-template-columns:1fr 1fr;margin-top:14px}
+  .ex-lista b{font-size:13.5px}
+}
+@media (max-width:640px){
+  .ex-escena{aspect-ratio:1.05}
+  .ex-ficha{position:relative;left:auto;right:auto;bottom:auto;margin-top:10px;grid-template-columns:84px 1fr;display:none}
+  .ex-ficha.ver{display:grid}
+  .ex-punto{width:30px;height:30px;margin:-15px 0 0 -15px}.ex-punto span{width:22px;height:22px;font-size:11px}
+  .ex-lista{grid-template-columns:1fr}
+}

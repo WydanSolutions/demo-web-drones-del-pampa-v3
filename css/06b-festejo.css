@@ -1,0 +1,68 @@
+/* =====================================================================
+   FESTEJO DE LA INSCRIPCIÓN (09b-festejo.js)
+   ===================================================================== */
+.modal.modal-festejo{width:min(600px,calc(100% - 24px));overflow-x:hidden}
+.festejo{position:relative;display:grid;justify-items:center;text-align:center;padding:46px clamp(20px,5vw,44px) 30px;isolation:isolate}
+.fe-cielo{position:absolute;inset:0 0 auto;height:230px;z-index:-1;opacity:.55;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent);mask-image:linear-gradient(180deg,#000,transparent);
+  background:radial-gradient(60% 90% at 50% 0%,rgba(109,183,46,.22),transparent 70%)}
+.fe-cielo svg{width:100%;height:100%}
+.fe-sello{position:relative;width:104px;height:104px;display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--verde-suave) 70%);box-shadow:var(--sombra-verde)}
+.fe-check{width:78px;height:78px;fill:none;stroke:var(--verde-osc);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.fe-check circle{stroke:var(--verde);stroke-dasharray:230;stroke-dashoffset:230;animation:trazo 1s .25s var(--ease) forwards}
+.fe-check path{stroke-dasharray:60;stroke-dashoffset:60;animation:trazo .6s .85s var(--ease) forwards}
+.fe-onda{position:absolute;inset:0;border-radius:50%;border:2px solid var(--verde);opacity:0;animation:feOnda 2.4s 1s ease-out infinite}
+.fe-onda.b{animation-delay:1.8s}
+@keyframes feOnda{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.7);opacity:0}}
+.festejo.espera .fe-sello{background:radial-gradient(circle at 35% 30%,#fff,#fdeccb 70%)}
+.festejo.espera .fe-check circle,.festejo.espera .fe-onda{stroke:var(--ambar);border-color:var(--ambar)}
+.fe-pre{margin-top:22px;font:700 13px/1 var(--f-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--verde-osc)}
+.fe-tit{font:800 clamp(26px,5vw,34px)/1.1 var(--f-titulo);letter-spacing:-.03em;margin-top:10px;text-wrap:balance}
+.fe-txt{margin-top:12px;color:var(--tinta-2);font-size:16px;line-height:1.6;max-width:470px;text-wrap:pretty}
+
+/* Comprobante con corte de ticket */
+.fe-ticket{position:relative;width:100%;display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:14px;margin-top:24px;padding:12px;
+  border-radius:20px;background:var(--fondo-tarjeta);border:1px solid var(--linea);box-shadow:var(--sombra);text-align:left}
+.fe-ticket-img{width:78px;height:78px;border-radius:14px;overflow:hidden}
+.fe-ticket-img img{width:100%;height:100%;object-fit:cover}
+.fe-ticket-txt{min-width:0}
+.fe-ticket-txt small,.fe-ticket-num small{display:block;font:600 11px var(--f-texto);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-3)}
+.fe-ticket-txt b{display:block;font:700 16px/1.25 var(--f-titulo);margin:2px 0 6px}
+.fe-ticket-datos{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:var(--tinta-2)}
+.fe-ticket-datos span{display:inline-flex;align-items:center;gap:5px}
+.fe-ticket-datos svg{width:14px;height:14px;color:var(--azul)}
+.fe-ticket-num{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding-left:16px;border-left:2px dashed var(--linea-2);text-align:center}
+.fe-ticket-num b{font:800 17px var(--f-titulo);color:var(--azul);letter-spacing:.02em}
+.fe-ticket::before,.fe-ticket::after{content:"";position:absolute;right:calc(var(--num-ancho,92px) - 9px);width:18px;height:18px;border-radius:50%;background:var(--blanco)}
+.fe-ticket::before{top:-9px;box-shadow:inset 0 -1px 0 var(--linea)}
+.fe-ticket::after{bottom:-9px;box-shadow:inset 0 1px 0 var(--linea)}
+.ok-caja .fe-ticket{margin-top:6px}
+.ok-caja .fe-ticket::before,.ok-caja .fe-ticket::after{display:none}
+
+/* Lo que sigue */
+.fe-pasos{list-style:none;width:100%;display:grid;gap:0;margin-top:22px;text-align:left}
+.fe-pasos li{position:relative;display:flex;align-items:center;gap:14px;padding:10px 0}
+.fe-pasos li + li::before{content:"";position:absolute;left:19px;top:-12px;height:24px;border-left:2px dashed var(--linea-2)}
+.fe-pasos span{width:40px;height:40px;flex:none;border-radius:13px;display:grid;place-items:center;background:var(--niebla);color:var(--azul)}
+.fe-pasos li:first-child span{background:var(--verde);color:#fff;box-shadow:0 8px 18px -8px rgba(109,183,46,.8)}
+.fe-pasos svg{width:20px;height:20px}
+.fe-pasos b{display:block;font:600 15px/1.3 var(--f-texto)}
+.fe-pasos small{display:block;font-size:13px;color:var(--tinta-3)}
+.fe-btns{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.fe-wa{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font:600 14px var(--f-texto);color:#128c4a}
+.fe-wa svg{width:18px;height:18px}
+.fe-wa:hover{text-decoration:underline}
+.confeti{position:fixed;inset:0;width:100vw;height:100vh;z-index:1300;pointer-events:none}
+@media (max-width:520px){
+  .festejo{padding-top:40px}
+  .fe-btns{grid-template-columns:1fr}
+  .fe-ticket{grid-template-columns:60px 1fr;gap:12px}
+  .fe-ticket-img{width:60px;height:60px}
+  .fe-ticket-num{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;padding:10px 4px 0;border-left:0;border-top:2px dashed var(--linea-2)}
+  .fe-ticket::before,.fe-ticket::after{display:none}
+}
+/* En la caja angosta del costado, el comprobante va en dos renglones */
+.ok-caja .fe-ticket{grid-template-columns:60px 1fr;gap:12px}
+.ok-caja .fe-ticket-img{width:60px;height:60px}
+.ok-caja .fe-ticket-num{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;padding:10px 4px 0;border-left:0;border-top:2px dashed var(--linea-2)}

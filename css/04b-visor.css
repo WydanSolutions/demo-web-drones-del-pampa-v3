@@ -1,0 +1,62 @@
+/* =====================================================================
+   VISOR DEL DRON (07b-visor.js): escenario oscuro con foco, piso y
+   reflejo; flechas, miniaturas y barra de tiempo del pase automático.
+   ===================================================================== */
+.fd-visor{position:relative;border-radius:32px;overflow:hidden;isolation:isolate;outline:none;
+  background:radial-gradient(70% 80% at 50% 30%,var(--azul-2) 0%,var(--azul-osc) 48%,var(--noche) 100%);
+  box-shadow:var(--sombra-2),inset 0 1px 0 rgba(255,255,255,.12)}
+.fd-visor:focus-visible{box-shadow:var(--sombra-2),0 0 0 3px var(--verde)}
+.fd-escenario{position:relative;aspect-ratio:1.55;perspective:1100px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.fd-escenario::before{content:"";position:absolute;inset:0;opacity:.18;
+  background:repeating-radial-gradient(ellipse at 50% 120%,transparent 0 22px,rgba(155,219,99,.55) 23px,transparent 24px);
+  -webkit-mask-image:linear-gradient(0deg,#000 0%,transparent 55%);mask-image:linear-gradient(0deg,#000 0%,transparent 55%)}
+.fd-foco{position:absolute;left:15%;top:-30%;width:70%;height:120%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(190,220,255,.42),rgba(120,170,240,.14) 55%,transparent);filter:blur(6px);pointer-events:none}
+.fd-piso{position:absolute;left:14%;right:14%;bottom:9%;height:16%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),transparent);filter:blur(10px)}
+.fd-reflejo{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(0deg,rgba(109,183,46,.16),transparent);pointer-events:none}
+.fd-marca{position:absolute;left:28px;top:22px;z-index:2;font:600 13px var(--f-texto);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.fd-marca b{color:var(--verde-claro);font-weight:800}
+.fd-pista{position:absolute;inset:0;transform-style:preserve-3d;animation:fdFlotar 6s ease-in-out infinite}
+.fd-pista img{position:absolute;inset:3% 4% 8%;width:92%;height:89%;object-fit:contain;opacity:0;pointer-events:none;
+  filter:drop-shadow(0 34px 28px rgba(0,0,0,.5)) drop-shadow(0 6px 8px rgba(0,0,0,.3))}
+.fd-pista img.act{opacity:1}
+@keyframes fdFlotar{50%{transform:translateY(-8px)}}
+
+.fd-flecha{position:absolute;z-index:3;top:calc(50% - 60px);width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 14px 30px -12px rgba(0,0,0,.6);transition:background .3s,transform .4s var(--ease),border-color .3s}
+.fd-flecha svg{width:24px;height:24px}
+.fd-flecha.ant{left:18px}.fd-flecha.ant svg{transform:scaleX(-1)}
+.fd-flecha.sig{right:18px}
+.fd-flecha:hover{background:var(--verde);border-color:var(--verde);transform:scale(1.08)}
+.fd-flecha:active{transform:scale(.94)}
+.fd-flecha.sig::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(155,219,99,.7);animation:fdLlamar 2.6s 1.5s ease-out infinite}
+.fd-visor.manual .fd-flecha.sig::after{display:none}
+@keyframes fdLlamar{0%{transform:scale(.9);opacity:.9}70%,100%{transform:scale(1.35);opacity:0}}
+
+.fd-info{position:absolute;z-index:3;right:24px;top:20px;display:flex;align-items:center;gap:12px;color:#fff}
+.fd-angulo{font:600 13px var(--f-texto);padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+.fd-contador{font:500 13px var(--f-texto);color:rgba(255,255,255,.6);letter-spacing:.06em}
+.fd-contador b{font:700 18px var(--f-titulo);color:#fff}
+.fd-tiempo{position:relative;z-index:3;height:3px;margin:0 24px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.fd-tiempo i{display:block;height:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--verde-claro),var(--verde))}
+.fd-visor.manual .fd-tiempo{opacity:0}
+.fd-miniaturas{position:relative;z-index:3;display:flex;gap:10px;padding:16px 24px 20px;overflow-x:auto;scrollbar-width:none}
+.fd-miniaturas::-webkit-scrollbar{display:none}
+.fd-miniaturas button{flex:none;width:86px;height:62px;border-radius:14px;padding:6px;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.12);transition:all .35s var(--ease)}
+.fd-miniaturas img{width:100%;height:100%;object-fit:contain;opacity:.8;transition:opacity .3s,transform .4s var(--ease)}
+.fd-miniaturas button:hover img{opacity:1;transform:scale(1.08)}
+.fd-miniaturas button.act{background:rgba(255,255,255,.16);border-color:var(--verde-claro);box-shadow:0 0 0 3px rgba(155,219,99,.18)}
+.fd-miniaturas button.act img{opacity:1}
+@media (max-width:640px){
+  .fd-visor{border-radius:24px;margin-inline:-6px}
+  .fd-escenario{aspect-ratio:1.15}
+  .fd-pista img{inset:14% 4% 14%;width:92%;height:72%}
+  .fd-flecha{width:46px;height:46px;top:auto;bottom:calc(50% - 23px)}
+  .fd-flecha svg{width:20px;height:20px}
+  .fd-flecha.ant{left:10px}.fd-flecha.sig{right:10px}
+  .fd-marca{left:16px;top:16px;font-size:11px}
+  .fd-info{right:14px;top:12px}.fd-angulo{display:none}
+  .fd-miniaturas{padding:12px 14px 14px;gap:8px}.fd-miniaturas button{width:68px;height:50px}
+  .fd-tiempo{margin:0 14px}
+}

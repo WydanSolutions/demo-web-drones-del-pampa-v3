@@ -1,0 +1,74 @@
+/* =====================================================================
+   AJUSTES DEL 12/11/2026 (versión 2):
+   - Menos aire: las secciones estaban muy separadas.
+   - WhatsApp con el ícono de Drones del Pampa (responde el equipo, no siempre Claudio).
+   - Bloque «El equipo» en Nosotros.
+   ===================================================================== */
+/* --- Menos espacio entre secciones (sin apretar) --- */
+.bloque{padding:clamp(48px,6vw,84px) 0}
+.bloque.pegado{padding-top:28px}
+.cabecera{margin-bottom:clamp(22px,3vw,32px)}
+.titulo{margin-top:12px}
+.sub{margin-top:14px}
+.cabeza-pag{padding:calc(var(--nav-alto) + 36px) 0 44px}
+.serv-hero,.nos-hero{padding:calc(var(--nav-alto) + 34px) 0 52px}
+.din-hero{padding:calc(var(--nav-alto) + 34px) 0 56px}
+.cm-hero-in{padding:calc(var(--nav-alto) + 30px) 0 40px}
+.fd-hero-in{padding-bottom:40px}
+.fd-h{margin:30px 0 14px}
+.fd-desc{margin:24px 0 6px}
+.valores{margin:24px 0}
+.pie-in{margin-top:40px}
+.cinta{margin-top:14px}
+.buscas{padding-top:clamp(36px,4vw,56px)}
+.din-reqs{margin-top:22px}
+@media (max-width:820px){
+  .bloque{padding:40px 0}
+  .bloque.pegado{padding-top:20px}
+  .cabecera{margin-bottom:20px}
+  .cabeza-pag{padding:calc(var(--nav-alto) + 22px) 0 30px}
+  .serv-hero,.nos-hero,.din-hero{padding:calc(var(--nav-alto) + 22px) 0 36px}
+}
+
+/* --- WhatsApp: ícono de la marca en vez de la cara de Claudio --- */
+.wa-flotante{background:#fff;display:grid;place-items:center}
+.wa-logo{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;background:#fff;border:3px solid var(--wa);padding:9px}
+.wa-logo-dp{width:100%;height:auto}
+.nav-claudio{padding:0 18px 0 14px;gap:8px}
+.nav-claudio > svg:first-child{width:20px;height:20px}
+@media (max-width:1180px){.nav-claudio{padding:0 13px}.nav-claudio span{display:none}}
+.pie-cta-logo{display:grid;place-items:center;background:#fff;padding:14px}
+.pie-cta-dp{width:100%;height:auto}
+.ct-logo{width:64px;height:64px;flex:none;border-radius:18px;display:grid;place-items:center;background:var(--niebla);padding:10px}
+.ct-dp{width:100%;height:auto}
+.din-claudio{color:inherit;transition:border-color .3s,transform .4s var(--ease)}
+.din-claudio:hover{border-color:var(--wa);transform:translateY(-2px)}
+.din-dp{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--wa);color:#fff}
+.din-dp svg{width:22px;height:22px}
+.hero-claudio span svg{width:15px;height:15px}
+.hero-claudio span{color:var(--azul)}
+
+/* --- El equipo (Nosotros) --- */
+.equipo{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.eq{position:relative;display:flex;flex-direction:column;gap:6px;padding:22px 20px;border-radius:24px;background:var(--fondo-tarjeta);border:1px solid var(--linea);box-shadow:var(--sombra);transition:transform .5s var(--ease),box-shadow .5s}
+.eq:hover{transform:translateY(-5px);box-shadow:var(--sombra-2)}
+.eq-ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--verde-suave);color:var(--verde-osc);margin-bottom:8px}
+.eq-ico svg{width:26px;height:26px}
+.eq-foto{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:50% 25%;border:3px solid #fff;box-shadow:0 8px 20px -8px rgba(7,42,110,.5);margin-bottom:6px}
+.eq small{font:700 11.5px var(--f-texto);letter-spacing:.12em;text-transform:uppercase;color:var(--verde-osc)}
+.eq b{font:700 18px var(--f-titulo)}
+.eq p{font-size:14px;color:var(--tinta-2);line-height:1.5}
+.eq-dueno{background:linear-gradient(160deg,var(--azul),var(--azul-osc));color:#fff;border-color:transparent}
+.eq-dueno small{color:var(--verde-claro)}
+.eq-dueno p{color:#cddbf3}
+@media (max-width:1100px){.equipo{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){.equipo{grid-template-columns:1fr 1fr}.eq-dueno{grid-column:1/-1}}
+@media (max-width:420px){.eq{padding:18px 16px}.eq p{font-size:13.5px}}
+.wa-flotante .wa-logo svg{position:static;width:100%;height:auto;padding:0;background:none;border:0;border-radius:0}
+/* Logo más grande en la barra de arriba (pedido del 12/11/2026) */
+.logo-nav{height:60px}
+.nav.solido .logo-nav{height:52px}
+@media (max-width:820px){.logo-nav{height:48px}}
+/* Servicio técnico con video de Claudio trabajando (sin la marca de agua de Instagram, que queda abajo del recorte) */
+.serv-hero-foto video{width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block}
+.serv-hero-foto .claudio-sonido{position:absolute;right:16px;top:16px;bottom:auto;left:auto;translate:none}

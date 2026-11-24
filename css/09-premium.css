@@ -1,0 +1,77 @@
+/* =====================================================================
+   DETALLES «PREMIUM» (versión 2): menos blanco, sombras en capas, grano
+   en las partes oscuras, cinta que corre, barra de avance y el «estudio»
+   oscuro detrás de cada dron.
+   ===================================================================== */
+/* Barra de avance arriba */
+.progreso-pag{position:fixed;z-index:1100;left:0;top:0;width:100%;height:3px;transform-origin:left;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--azul),var(--cielo),var(--verde));pointer-events:none}
+
+/* Las partes oscuras: tarjeta grande con bordes redondeados (como la portada) y un grano muy suave */
+.bloque.noche{margin-inline:14px;border-radius:36px;overflow:hidden;isolation:isolate;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.bloque.noche::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.35;mix-blend-mode:overlay;background:url(../media/marca/grano.svg)}
+.bloque.noche::after{content:"";position:absolute;z-index:-1;left:-10%;bottom:-40%;width:60%;height:80%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(109,183,46,.18),transparent)}
+@media (max-width:820px){.bloque.noche{margin-inline:8px;border-radius:28px}}
+.noche .enlace{color:var(--verde-claro)}
+
+/* Títulos: la palabra destacada con un degradé */
+.titulo b{background:linear-gradient(120deg,var(--azul) 10%,var(--cielo) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.noche .titulo b{background:linear-gradient(120deg,var(--verde-claro),#d9f5c0);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Botones con un brillo arriba, como los de una app */
+.btn-azul{background:linear-gradient(180deg,var(--azul-2),var(--azul));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 14px 34px -12px rgba(11,61,158,.6)}
+.btn-verde{background:linear-gradient(180deg,#7cc63c,var(--verde));box-shadow:inset 0 1px 0 rgba(255,255,255,.3),var(--sombra-verde)}
+.btn-wa{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 14px 34px -12px rgba(37,211,102,.6)}
+.btn-borde{box-shadow:var(--brillo),0 2px 6px -2px rgba(10,27,61,.08)}
+
+/* Tarjetas: sombra en capas siempre (no solo al pasar el mouse) */
+.dron-card,.promo,.curso,.curso-banner,.faq-item,.prod,.turno-form{box-shadow:var(--sombra);border-color:rgba(201,212,230,.7)}
+.dron-card:hover,.promo:hover,.curso:hover,.curso-banner:hover{box-shadow:var(--sombra-2)}
+.dron-card,.promo,.curso-banner{transform-style:preserve-3d;will-change:transform}
+
+/* El dron de cada tarjeta, en un «estudio» oscuro con foco de luz */
+.dc-img{background:radial-gradient(70% 85% at 50% 25%,var(--azul-2),var(--azul-osc) 55%,var(--noche))}
+.dc-img::after{content:"";position:absolute;left:18%;right:18%;bottom:8%;height:12%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.5),transparent);filter:blur(6px)}
+.dc-halo{background:radial-gradient(rgba(190,220,255,.35),transparent 68%)}
+.dc-img img{z-index:1;filter:drop-shadow(0 26px 22px rgba(0,0,0,.45))}
+.dc-etq{z-index:2;background:rgba(255,255,255,.14) !important;color:#fff !important;border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(8px)}
+
+/* Destacados en fondo oscuro */
+.destacados .carrusel-flechas button{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff}
+.destacados .carrusel-flechas button:hover{background:var(--verde);border-color:var(--verde);color:#fff}
+.carrusel-flechas button{transition:all .3s,opacity .3s}
+.carrusel-flechas button[disabled]{opacity:.3;pointer-events:none}
+.destacados .dron-card{border-color:transparent;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.carrusel-progreso{position:relative;height:3px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden;margin-top:6px}
+.carrusel-progreso i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,var(--verde-claro),var(--verde));transition:transform .2s linear}
+@media (max-width:820px){.destacados .carrusel-flechas button{display:none}}
+
+/* Cinta que corre debajo de la portada */
+.cinta{margin:18px 0 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.cinta-pista{display:flex;align-items:center;gap:26px;width:max-content;animation:cinta 38s linear infinite}
+.cinta:hover .cinta-pista{animation-play-state:paused}
+.cinta span{display:inline-flex;align-items:center;gap:10px;font:600 15px var(--f-titulo);color:var(--tinta);white-space:nowrap}
+.cinta span svg{width:22px;height:22px;padding:4px;border-radius:8px;background:var(--azul);color:#fff;flex:none}
+.cinta i{width:7px;height:7px;border-radius:50%;background:var(--verde);flex:none}
+@keyframes cinta{to{transform:translateX(calc(-50% - 13px))}}
+@media (max-width:820px){.cinta{margin-top:12px}.cinta span{font-size:13.5px}.cinta-pista{animation-duration:30s}}
+
+/* Accesos: borde de luz y sombra */
+.acceso{box-shadow:var(--sombra)}
+.acceso::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+
+/* Encabezados de página: un poco de color de fondo, no blanco plano */
+.cabeza-pag{background:radial-gradient(60% 80% at 90% 0%,rgba(109,183,46,.12),transparent 60%),linear-gradient(180deg,#e6eef9,var(--fondo-pagina))}
+.serv-hero{background:radial-gradient(60% 80% at 90% 0%,rgba(109,183,46,.12),transparent 60%),linear-gradient(180deg,#e6eef9,var(--fondo-pagina))}
+
+/* Menú: vidrio con borde de luz */
+.nav{background:rgba(238,243,249,.78)}
+.nav.solido{background:rgba(255,255,255,.88);box-shadow:0 1px 0 rgba(201,212,230,.6),0 12px 30px -18px rgba(11,61,158,.35)}
+.nav-enlaces{box-shadow:var(--brillo),0 4px 14px -8px rgba(11,61,158,.25)}
+.nav-luz{background:linear-gradient(180deg,var(--azul-2),var(--azul));box-shadow:0 6px 16px -6px rgba(11,61,158,.6)}
+
+/* Pie sobre el mismo fondo con color */
+.pie{background:linear-gradient(180deg,var(--fondo-pagina),#e4ecf7)}
+.noche .dron-card{color:var(--tinta)}
+.noche .dron-card .precio{color:var(--tinta)}

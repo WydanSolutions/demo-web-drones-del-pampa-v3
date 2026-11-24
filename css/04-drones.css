@@ -1,0 +1,108 @@
+/* =====================================================================
+   DRONES: tarjetas, catálogo, comparador, asesor y ficha del dron.
+   ===================================================================== */
+.drones-grilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px}
+.drones-grilla.tres{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.dron-card{display:flex;flex-direction:column;border-radius:30px;background:#fff;border:1px solid var(--linea);overflow:hidden;transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.dron-card:hover{transform:translateY(-8px);box-shadow:var(--sombra-2)}
+.dc-img{position:relative;aspect-ratio:1.35;display:block;background:linear-gradient(180deg,#eaf1fb,#f7fafe);overflow:hidden}
+.dc-halo{position:absolute;inset:18% 14%;border-radius:50%;background:radial-gradient(rgba(29,96,184,.22),transparent 68%);filter:blur(18px);transition:transform .8s var(--ease)}
+.dron-card:hover .dc-halo{transform:scale(1.25)}
+.dc-img img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;transition:opacity .5s var(--ease),transform .8s var(--ease);filter:drop-shadow(0 26px 22px rgba(7,42,110,.25))}
+.dc-b{opacity:0;transform:scale(.94) rotate(-4deg)}
+.dron-card:hover .dc-a{opacity:0;transform:scale(1.05)}
+.dron-card:hover .dc-b{opacity:1;transform:scale(1.04) rotate(0)}
+.dc-etq{position:absolute;top:16px;left:16px}
+.dc-info{display:flex;flex-direction:column;flex:1;padding:22px 24px 24px}
+.dc-info h3{font:600 23px/1.15 var(--f-titulo);letter-spacing:-.02em}
+.dc-info h3 b{color:var(--azul);font-weight:800}
+.dc-info > p{color:var(--tinta-2);font-size:14.5px;margin-top:4px}
+.dc-specs{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.dc-specs li{padding:10px;border-radius:14px;background:var(--niebla)}
+.dc-specs b{display:block;font:700 18px/1 var(--f-titulo)}
+.dc-specs b small{font:600 11px var(--f-texto);color:var(--verde-osc);margin-left:2px}
+.dc-specs span{display:block;font-size:11px;color:var(--tinta-3);margin-top:5px;line-height:1.25}
+.dc-pie{display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto}
+.desde{display:block;font:600 11px var(--f-texto);text-transform:uppercase;letter-spacing:.1em;color:var(--tinta-3);margin-bottom:5px}
+.dc-pie .precio{font-size:26px}
+.dc-ir{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--azul);color:#fff;transition:transform .5s var(--ease),background .3s}
+.dc-ir svg{width:22px;height:22px}
+.dron-card:hover .dc-ir{transform:rotate(-45deg);background:var(--verde)}
+.dc-comp{display:inline-flex;align-self:flex-start;margin:-4px 0 14px;cursor:pointer}
+.dc-comp input{position:absolute;opacity:0}
+.dc-comp span{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:999px;border:1.5px dashed var(--linea-2);font:600 13px var(--f-texto);color:var(--tinta-2);transition:all .3s}
+.dc-comp span svg{width:15px;height:15px}
+.dc-comp input:checked + span{border-style:solid;border-color:var(--azul);background:rgba(11,61,158,.08);color:var(--azul)}
+@media (max-width:520px){.drones-grilla{grid-template-columns:1fr}}
+
+.asesor-btn{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;column-gap:14px;align-items:center;text-align:left;padding:18px 22px;border-radius:24px;background:#fff;box-shadow:var(--sombra);max-width:380px;transition:transform .4s var(--ease)}
+.asesor-btn:hover{transform:translateY(-4px)}
+.ab-ico{grid-row:1/3;width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--verde),var(--verde-osc));color:#fff}
+.ab-ico svg{width:24px;height:24px}
+.asesor-btn b{font:700 17px var(--f-titulo)}
+.asesor-btn > span:not(.ab-ico){font-size:13px;color:var(--tinta-2);grid-column:2}
+.asesor-btn > svg{grid-row:1/3;grid-column:3;width:22px;height:22px;color:var(--azul)}
+
+.barra-comp{position:fixed;z-index:760;left:50%;bottom:24px;translate:-50% 150%;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 18px;border-radius:22px;background:var(--tinta);color:#fff;box-shadow:0 20px 50px -14px rgba(0,0,0,.5);transition:translate .55s var(--ease)}
+.barra-comp.ver{translate:-50% 0}
+.bc-items{display:flex;gap:8px}
+.bc-items span{display:flex;align-items:center;gap:6px;font:600 13px var(--f-texto)}
+.bc-items img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:10px}
+@media (max-width:820px){.barra-comp{bottom:92px;width:calc(100% - 20px);justify-content:space-between}.bc-items span{font-size:0}.barra-comp .btn{font-size:13px}}
+
+.comp{padding:34px clamp(18px,3vw,40px) 34px}
+.comp h3{font:700 28px var(--f-titulo);margin-bottom:22px}
+.comp-tabla{overflow-x:auto}
+.comp-fila{display:grid;grid-template-columns:180px repeat(var(--n),minmax(140px,1fr));gap:10px;padding:12px 0;border-bottom:1px solid var(--linea);align-items:center;min-width:max-content}
+.comp-fila > span{font-size:13.5px;color:var(--tinta-2);font-weight:600}
+.comp-fila > div{font-size:14.5px}
+.comp-fila b{font:700 18px var(--f-titulo)}
+.comp-cab > div{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.comp-cab img{width:130px;height:90px;object-fit:contain;background:var(--niebla);border-radius:14px}
+
+.asesor{padding:34px 30px 30px}
+.as-barra{height:5px;border-radius:5px;background:var(--niebla-2);overflow:hidden;margin-bottom:14px}
+.as-barra i{display:block;height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));transition:width .5s var(--ease)}
+.asesor > small{font:600 12px var(--f-texto);color:var(--tinta-3);text-transform:uppercase;letter-spacing:.12em}
+.asesor h3{font:700 25px/1.2 var(--f-titulo);margin:8px 0 20px}
+.as-ops{display:grid;gap:10px}
+.as-op{display:flex;align-items:center;gap:14px;padding:16px;border-radius:18px;border:1.5px solid var(--linea);text-align:left;font-weight:600;transition:all .3s}
+.as-op span{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--niebla);color:var(--azul);font-weight:700;flex:none}
+.as-op:hover{border-color:var(--azul);background:rgba(11,61,158,.04)}
+.as-res{text-align:center;display:grid;justify-items:center;gap:8px}
+.as-res img{width:min(320px,80%);filter:drop-shadow(0 30px 24px rgba(7,42,110,.3))}
+.as-res h3{margin:6px 0 0}.as-res h3 b{color:var(--azul)}
+.as-res p{color:var(--tinta-2)}
+.as-btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
+.as-otra{margin-top:8px;color:var(--tinta-2);text-decoration:underline;font-size:14px}
+
+/* --- Ficha del dron --- */
+.fd-hero{position:relative;height:min(78svh,720px);min-height:480px;display:flex;align-items:flex-end;overflow:hidden;color:#fff}
+.fd-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fd-velo{position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,21,58,.9),rgba(5,21,58,.25) 55%,rgba(5,21,58,.45))}
+.fd-hero-in{position:relative;padding-bottom:56px}
+.fd-hero .chip,.cm-hero .chip{background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(8px)}
+.fd-titulo{font:600 clamp(42px,7vw,96px)/1 var(--f-titulo);letter-spacing:-.04em;margin:14px 0 10px}
+.fd-titulo b{font-weight:800;color:var(--verde-claro)}
+.fd-hero-in > p{font-size:clamp(17px,1.6vw,21px);color:#dbe6f8}
+.fd-in{display:grid;grid-template-columns:1fr 360px;gap:clamp(30px,5vw,70px);align-items:start}
+/* el visor del dron está en 04b-visor.css */
+.fd-desc{font-size:18px;color:var(--tinta-2);line-height:1.7;margin:34px 0 10px}
+.fd-h{font:700 13px var(--f-texto);letter-spacing:.16em;text-transform:uppercase;color:var(--verde-osc);margin:40px 0 16px}
+.fd-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fd-specs div{padding:20px;border-radius:20px;background:var(--niebla)}
+.fd-specs b{display:block;font:700 32px/1 var(--f-titulo);letter-spacing:-.02em}
+.fd-specs b small{font:600 14px var(--f-texto);color:var(--verde-osc);margin-left:3px}
+.fd-specs span{display:block;font-size:13px;color:var(--tinta-2);margin-top:8px}
+.fd-galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.fd-galeria button{aspect-ratio:4/3;border-radius:18px;overflow:hidden;cursor:zoom-in}
+.fd-galeria img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.fd-galeria button:hover img{transform:scale(1.07)}
+.fd-lado{position:sticky;top:96px}
+.fd-caja{display:flex;flex-direction:column;gap:12px;padding:26px;border-radius:28px;background:#fff;box-shadow:var(--sombra-2);border:1px solid var(--linea)}
+.fd-caja > small{font:600 12px var(--f-texto);text-transform:uppercase;letter-spacing:.12em;color:var(--tinta-3)}
+.fd-caja .precio{font-size:40px}
+.fd-caja > p{font-size:12.5px;color:var(--tinta-3);margin-bottom:6px}
+.fd-claudio{display:flex;gap:12px;align-items:center;margin-top:6px;padding:12px;border-radius:16px;background:var(--niebla);font-size:13px;color:var(--tinta-2);line-height:1.45}
+.fd-claudio img{width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+@media (max-width:900px){.fd-in{grid-template-columns:1fr}.fd-lado{position:static}.fd-specs{grid-template-columns:1fr 1fr}.fd-hero{height:62svh;min-height:420px}}
