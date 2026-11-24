@@ -88,6 +88,7 @@ if (EN_EDITOR) {
     const m = e.data || {}; if (!m.dp) return;
     if (m.dp === 'recargar') {
       if (editando) return;                                            // no se redibuja mientras se escribe
+      if (m.borrador) Almacen.poner(CLAVE_BORRADOR, m.borrador); if (m.publicado) Almacen.poner(CLAVE_DATOS, m.publicado);
       const y = window.scrollY; Datos.cargar(); prepararPaginas(); dibujarMarco(); mostrarRuta(true);
       window.scrollTo(0, y); if (window.lenis) window.lenis.scrollTo(y, { immediate: true });
       $$('[data-aparece], [data-dividir]').forEach(x => x.classList.add('visto'));

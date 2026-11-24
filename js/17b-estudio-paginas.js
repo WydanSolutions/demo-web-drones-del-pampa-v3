@@ -131,7 +131,7 @@ function iniciarEditorPagina(c){
   peListaBloques(); peInspector(); requestAnimationFrame(peEscalar);
   $$('[data-petab]', c).forEach(b => b.onclick = () => { _pg.tab = b.dataset.petab; $('.pe').className = 'pe pe-tab-' + _pg.tab + (_pg.lista ? '' : ' sin-lista'); $$('[data-petab]').forEach(x => x.classList.toggle('act', x === b)); peEscalar(); });
   $$('[data-disp]', c).forEach(b => b.onclick = () => { _pg.disp = b.dataset.disp; $('#pe-marco').className = 'pe-marco ' + _pg.disp; $$('[data-disp]').forEach(x => x.classList.toggle('act', x === b)); peEscalar(); });
-  const fr = $('#pe-iframe'); fr.onload = () => { $('#pe-cargando').hidden = true; peEscalar(); if (_pg.sel) peMarcar(_pg.sel); };
+  const fr = $('#pe-iframe'); fr.onload = () => { $('#pe-cargando').hidden = true; peEscalar(); setTimeout(() => { pePrevia(); if (_pg.sel) peMarcar(_pg.sel); }, 400); };
   if (!window._peRO) { window._peRO = new ResizeObserver(() => peEscalar()); }
   window._peRO.disconnect(); window._peRO.observe($('#pe-vista'));
 }
@@ -143,7 +143,8 @@ function peEscalar(){
   fr.style.width = W + 'px'; fr.style.height = (_pg.disp === 'compu' ? Math.max(H, (v.clientHeight - 24) / k) : H) + 'px';
   fr.style.transform = `scale(${k})`; m.style.width = W * k + 'px'; m.style.height = parseFloat(fr.style.height) * k + 'px';
 }
-function pePrevia(){ const fr = $('#pe-iframe'); if (fr && fr.contentWindow) fr.contentWindow.postMessage({ dp: 'recargar' }, '*'); }
+// La vista previa recibe el borrador en el mensaje (no tiene que esperar a que se grabe)
+function pePrevia(){ const fr = $('#pe-iframe'); if (fr && fr.contentWindow) fr.contentWindow.postMessage({ dp: 'recargar', borrador: Almacen.get(CLAVE_BORRADOR), publicado: Almacen.get(CLAVE_DATOS) }, '*'); }
 function peMarcar(id){ const fr = $('#pe-iframe'); if (fr && fr.contentWindow) fr.contentWindow.postMessage({ dp: 'marcar', id }, '*'); }
 Datos.alCambiar(() => { if (_esAbierto && _esSec === 'paginas' && _pg.id) { clearTimeout(window._pePrev); window._pePrev = setTimeout(() => { prepararPaginas(); pePrevia(); }, 140); } });
 // Lo que llega de la vista previa: elegir, escribir directo, cambiar foto, barra del bloque, agregar acá

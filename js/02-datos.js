@@ -28,12 +28,54 @@ const CLAVE_VERSIONES = CLAVE_DATOS + '_versiones';
 const CAMPOS_BANDEJA = ['pedidos', 'inscripciones', 'services', 'mensajes', 'dinacia'];
 const MAX_VERSIONES = 15, MAX_HISTORIAL = 80;
 
+/* ALMACÉN (24/11/2026): el contenido se guarda en IndexedDB (lugar grande del navegador), no en localStorage.
+   Todas las demos de wydansolutions.github.io comparten el MISMO localStorage (~5 MB) y la demo de gestión lo llena:
+   la v3 se quedaba sin lugar («No hay más lugar en este navegador»). Se lee todo una vez al arrancar (Almacen.listo)
+   y después se trabaja en memoria; cada cambio se escribe atrás. Lo que había en localStorage se muda y se borra de ahí.
+   Si IndexedDB no anda (navegador muy viejo o modo privado raro), se usa localStorage como antes. */
+const Almacen = (() => {
+  const mem = {}, CLAVES = [CLAVE_DATOS, CLAVE_BORRADOR, CLAVE_VERSIONES];
+  let db = null, sinIDB = false;
+  const abrir = () => new Promise(ok => {
+    try { const r = indexedDB.open('dp_web_v3', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('datos');
+      r.onsuccess = () => ok(r.result); r.onerror = () => ok(null); r.onblocked = () => ok(null);
+    } catch (e) { ok(null); }
+  });
+  const pedir = req => new Promise(ok => { req.onsuccess = () => ok(req.result); req.onerror = () => ok(undefined); });
+  const listo = (async () => {
+    db = await abrir();
+    if (!db) { sinIDB = true; for (const k of CLAVES) { try { mem[k] = localStorage.getItem(k); } catch (e) {} } return; }
+    const st = db.transaction('datos', 'readonly').objectStore('datos');
+    for (const k of CLAVES) mem[k] = (await pedir(st.get(k))) ?? null;
+    // Mudanza desde localStorage (versiones anteriores de la v3)
+    for (const k of CLAVES) { let viejo = null; try { viejo = localStorage.getItem(k); } catch (e) {}
+      if (viejo) { if (mem[k] == null) { mem[k] = viejo; guardarAtras(k); } try { localStorage.removeItem(k); } catch (e) {} } }
+  })();
+  const pendientes = {};
+  function guardarAtras(k){
+    if (sinIDB || !db) return;
+    const v = mem[k];
+    pendientes[k] = new Promise(ok => { try { const tx = db.transaction('datos', 'readwrite'), st = tx.objectStore('datos');
+      v == null ? st.delete(k) : st.put(v, k); tx.oncomplete = () => ok(true); tx.onerror = tx.onabort = () => ok(false); } catch (e) { ok(false); } });
+  }
+  return {
+    listo,
+    get: k => mem[k] ?? null,
+    set(k, txt){ mem[k] = txt; if (sinIDB) { try { localStorage.setItem(k, txt); } catch (e) { return false; } return true; } guardarAtras(k); return true; },
+    del(k){ mem[k] = null; if (sinIDB) { try { localStorage.removeItem(k); } catch (e) {} } else guardarAtras(k); },
+    // La vista previa del Estudio recibe el borrador por mensaje (así no depende de que termine de grabarse)
+    poner(k, txt){ mem[k] = txt; },
+    esperar: () => Promise.all(Object.values(pendientes))
+  };
+})();
+
 const Datos = (() => {
   let d = null, modo = 'publicado';
   let antes = [], despues = [], ultimo = '';          // deshacer / rehacer (solo el borrador)
   const copia = o => JSON.parse(JSON.stringify(o));
-  const leer = k => { try { const t = localStorage.getItem(k); return t ? JSON.parse(t) : null; } catch (e) { return null; } };
-  const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+  const leer = k => { try { const t = Almacen.get(k); return t ? JSON.parse(t) : null; } catch (e) { return null; } };
+  const escribir = (k, v) => { try { return Almacen.set(k, JSON.stringify(v)); } catch (e) { return false; } };
   const valido = g => g && g._v === VERSION_CONTENIDO && Array.isArray(g.drones);
   // Contenido sin lo que mandan los visitantes (para comparar, versiones y deshacer)
   const contenido = g => { const c = {}; for (const k of Object.keys(g)) if (!CAMPOS_BANDEJA.includes(k)) c[k] = g[k]; return c; };
@@ -141,7 +183,7 @@ const Datos = (() => {
     return guardar();
   }
   function descartarBorrador(){
-    try { localStorage.removeItem(CLAVE_BORRADOR); } catch (e) {}
+    Almacen.del(CLAVE_BORRADOR);
     usarBorrador(); avisarCambio();
   }
 

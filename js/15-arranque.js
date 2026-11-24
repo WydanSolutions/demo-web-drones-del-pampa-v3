@@ -7,6 +7,7 @@
    ===================================================================== */
 async function iniciar(){
   document.documentElement.lang = IDIOMA === 'pt' ? 'pt-BR' : 'es-UY';
+  await Almacen.listo;                    // el contenido vive en IndexedDB (02-datos.js)
   Datos.cargar();
   prepararPaginas();
   const conAdmin = /[?&]admin\b/.test(location.search);
