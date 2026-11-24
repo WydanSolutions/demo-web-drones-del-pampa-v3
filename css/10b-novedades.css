@@ -113,3 +113,21 @@ html.en-estudio [data-aparece],html.en-estudio .pal > span{opacity:1 !important;
 html.en-estudio #dron-guia,html.en-estudio .wa-flotante{display:none !important}
 .vista-etq{position:fixed;z-index:9999;padding:6px 12px;border-radius:10px;background:var(--verde-osc);color:#fff;font:600 12.5px var(--f-texto);pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
 .vista-etq.ver{opacity:1;transform:none}
+
+/* Vista previa del Estudio: textos que se escriben directo, barra del bloque y «Agregar bloque acá» */
+html.en-estudio [data-ed]{cursor:text;border-radius:6px;transition:box-shadow .2s,background .2s}
+html.en-estudio [data-ed]:hover{box-shadow:0 0 0 2px rgba(109,183,46,.75);background:rgba(109,183,46,.08)}
+html.en-estudio [data-ed-img],html.en-estudio [data-ed-md]{cursor:pointer}
+html.en-estudio [data-ed-img]:hover{outline:3px dashed rgba(109,183,46,.9);outline-offset:-3px}
+html.en-estudio [data-ed-md]:hover{box-shadow:0 0 0 2px rgba(60,130,207,.6);border-radius:8px}
+html.en-estudio .vista-escribiendo{outline:none;box-shadow:0 0 0 3px var(--verde) !important;background:rgba(255,255,255,.12) !important;cursor:text}
+.vista-barra{position:absolute;z-index:70;top:12px;right:12px;display:flex;align-items:center;gap:2px;padding:4px 4px 4px 12px;border-radius:14px;background:var(--verde-osc);color:#fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);font:600 12.5px var(--f-texto)}
+.vista-barra b{margin-right:6px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vista-barra button{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff}
+.vista-barra button:hover{background:rgba(255,255,255,.16)}
+.vista-barra button.rojo:hover{background:var(--rojo)}
+.vista-barra .ico{width:17px;height:17px}
+.vista-mas{position:absolute;z-index:70;left:50%;bottom:-19px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;height:38px;padding:0 18px 0 12px;border-radius:999px;background:var(--verde);color:#fff;font:700 13.5px var(--f-texto);box-shadow:0 10px 26px -8px rgba(63,138,31,.7);white-space:nowrap}
+.vista-mas:hover{background:var(--verde-osc)}
+.vista-mas .ico{width:18px;height:18px}
+html.en-estudio .bq.elegido{z-index:5}

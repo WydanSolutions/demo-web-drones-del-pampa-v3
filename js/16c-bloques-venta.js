@@ -41,26 +41,26 @@ registrarBloque('promo', { nombre: 'Promoción con vencimiento', grupo: 'Venta',
   campos: [...CAMPOS_CAB, ['img', 'Foto', 'img'], ['precio', 'Precio en dólares (opcional)', 'usd'], ['precioAntes', 'Precio anterior tachado (opcional)', 'usd'],
     ['hasta', 'Válida hasta (muestra la cuenta regresiva)', 'fecha'], ['boton', 'Botón', 'boton']],
   render(d){ const vencida = d.hasta && d.hasta < hoyISO();
-    return `<div class="b-promo ${vencida ? 'vencida' : ''}" data-aparece><div class="b-promo-img">${d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : ''}${vencida ? `<span class="chip gris">${IDIOMA === 'pt' ? 'Encerrada' : 'Terminó'}</span>` : ''}</div>
+    return `<div class="b-promo ${vencida ? 'vencida' : ''}" data-aparece><div class="b-promo-img"${edimg('img')}>${d.img ? `<img src="${esc(d.img)}" alt="" loading="lazy">` : ''}${vencida ? `<span class="chip gris">${IDIOMA === 'pt' ? 'Encerrada' : 'Terminó'}</span>` : ''}</div>
       <div class="b-promo-txt">${cabeceraB(d)}${d.precio ? `<div class="b-promo-precio">${precioHTML(d.precio, d.precioAntes)}</div>` : ''}
-        ${d.hasta && !vencida ? `<div class="cuenta" data-fecha="${esc(d.hasta)}"></div>` : ''}<div class="b-botones">${botonB(d.boton)}</div></div></div>`; },
+        ${d.hasta && !vencida ? `<div class="cuenta" data-fecha="${esc(d.hasta)}"></div>` : ''}<div class="b-botones">${botonB(d.boton, '', 'boton')}</div></div></div>`; },
   alMostrar(el){ $$('.cuenta', el).forEach(cuentaRegresiva); }
 });
 
 registrarBloque('precios', { nombre: 'Paquetes y precios', grupo: 'Venta', icono: 'carrito',
   campos: [...CAMPOS_CAB, ['items', 'Paquetes', 'items', [['t', 'Nombre', 'i18n'], ['precio', 'Precio en dólares (0 = consultar)', 'usd'], ['per', 'Aclaración (ej. «por hectárea»)', 'i18n'],
     ['puntos', 'Qué incluye (un renglón por cosa)', 'md'], ['destacado', 'Destacado', 'check'], ['boton', 'Botón', 'boton']]]],
-  render(d){ return `${cabeceraB(d, true)}<div class="b-precios">${(d.items || []).map(x => `<div class="b-plan ${x.destacado ? 'dest' : ''}" data-aparece>
-      ${x.destacado ? `<span class="b-plan-chip">${IDIOMA === 'pt' ? 'Mais escolhido' : 'El más elegido'}</span>` : ''}<b class="b-plan-t">${T(x.t)}</b>
+  render(d){ return `${cabeceraB(d, true)}<div class="b-precios">${(d.items || []).map((x, i) => `<div class="b-plan ${x.destacado ? 'dest' : ''}" data-aparece>
+      ${x.destacado ? `<span class="b-plan-chip">${IDIOMA === 'pt' ? 'Mais escolhido' : 'El más elegido'}</span>` : ''}<b class="b-plan-t"${edd('items.' + i + '.t')}>${T(x.t)}</b>
       <div class="b-plan-precio">${precioHTML(Number(x.precio) || 0)}${tx(x.per) ? `<small>${T(x.per)}</small>` : ''}</div>
       <ul>${tx(x.puntos).split('\n').map(s => s.replace(/^\s*[-•]\s*/, '').trim()).filter(Boolean).map(s => `<li>${icono('check')}<span>${esc(s)}</span></li>`).join('')}</ul>
-      <div class="b-botones">${botonB(x.boton, x.destacado ? 'btn-verde' : 'btn-azul')}</div></div>`).join('')}</div>`; }
+      <div class="b-botones">${botonB(x.boton, x.destacado ? 'btn-verde' : 'btn-azul', 'items.' + i + '.boton')}</div></div>`).join('')}</div>`; }
 });
 
 registrarBloque('testimonios', { nombre: 'Testimonios de clientes', grupo: 'Confianza', icono: 'usuarios',
   campos: [...CAMPOS_CAB, ['items', 'Testimonios', 'items', [['texto', 'Lo que dijo', 'i18n'], ['nombre', 'Nombre', 'texto'], ['lugar', 'Lugar o cargo', 'texto'], ['foto', 'Foto (opcional)', 'img'], ['estrellas', 'Estrellas (1 a 5)', 'numero']]]],
-  render(d){ return `${cabeceraB(d, true)}<div class="b-testimonios">${(d.items || []).map(x => `<figure class="b-testi" data-aparece>
-      <div class="b-estrellas">${'★'.repeat(Math.max(0, Math.min(5, Number(x.estrellas) || 5)))}</div><blockquote>“${T(x.texto)}”</blockquote>
+  render(d){ return `${cabeceraB(d, true)}<div class="b-testimonios">${(d.items || []).map((x, i) => `<figure class="b-testi" data-aparece>
+      <div class="b-estrellas">${'★'.repeat(Math.max(0, Math.min(5, Number(x.estrellas) || 5)))}</div><blockquote>“<span${edd('items.' + i + '.texto')}>${T(x.texto)}</span>”</blockquote>
       <figcaption>${x.foto ? `<img src="${esc(x.foto)}" alt="">` : `<span class="b-inicial">${esc((x.nombre || '?').trim()[0] || '?')}</span>`}<div><b>${esc(x.nombre || '')}</b><small>${esc(x.lugar || '')}</small></div></figcaption></figure>`).join('')}</div>`; }
 });
 
@@ -72,18 +72,18 @@ registrarBloque('logos', { nombre: 'Logos de marcas', grupo: 'Confianza', icono:
 
 registrarBloque('equipo', { nombre: 'El equipo', grupo: 'Confianza', icono: 'usuarios',
   campos: [...CAMPOS_CAB, ['items', 'Personas o áreas', 'items', [['foto', 'Foto', 'img'], ['nombre', 'Nombre o área', 'i18n'], ['rol', 'Qué hace', 'i18n']]]],
-  render(d){ return `${cabeceraB(d, true)}<div class="b-equipo">${(d.items || []).map(x => `<div class="b-persona" data-aparece>${x.foto ? `<img src="${esc(x.foto)}" alt="">` : `<span class="b-persona-ico">${icono('usuarios')}</span>`}<b>${T(x.nombre)}</b><span>${T(x.rol)}</span></div>`).join('')}</div>`; }
+  render(d){ return `${cabeceraB(d, true)}<div class="b-equipo">${(d.items || []).map((x, i) => `<div class="b-persona" data-aparece>${x.foto ? `<img src="${esc(x.foto)}" alt=""${edimg('items.' + i + '.foto')}>` : `<span class="b-persona-ico"${edimg('items.' + i + '.foto')}>${icono('usuarios')}</span>`}<b${edd('items.' + i + '.nombre')}>${T(x.nombre)}</b><span${edd('items.' + i + '.rol')}>${T(x.rol)}</span></div>`).join('')}</div>`; }
 });
 
 registrarBloque('cta', { nombre: 'Llamado a la acción', grupo: 'Contacto', icono: 'flecha', fondo: 'verde', angosto: true,
   campos: [['titulo', 'Título', 'i18n'], ['texto', 'Texto', 'md'], ['b1', 'Botón principal', 'boton'], ['b2', 'Botón secundario (opcional)', 'boton']],
-  render(d){ return `<div class="b-cta" data-aparece><h2 class="titulo chico">${T(d.titulo)}</h2>${tx(d.texto) ? `<div class="sub b-md">${md(d.texto)}</div>` : ''}<div class="b-botones">${botonB(d.b1, 'btn-blanco')}${botonB(d.b2, 'btn-vidrio')}</div></div>`; }
+  render(d){ return `<div class="b-cta" data-aparece><h2 class="titulo chico"${edd('titulo')}>${T(d.titulo)}</h2>${tx(d.texto) ? `<div class="sub b-md"${edmd('texto')}>${md(d.texto)}</div>` : ''}<div class="b-botones">${botonB(d.b1, 'btn-blanco', 'b1')}${botonB(d.b2, 'btn-vidrio', 'b2')}</div></div>`; }
 });
 
 registrarBloque('whatsapp', { nombre: 'Botón grande de WhatsApp', grupo: 'Contacto', icono: 'wa', angosto: true,
   campos: [['titulo', 'Título', 'i18n'], ['texto', 'Texto', 'i18n'], ['mensaje', 'Mensaje que se escribe solo', 'i18n'], ['boton', 'Texto del botón', 'i18n']],
-  render(d){ return `<div class="b-wa" data-aparece><span class="b-wa-ico">${icono('wa')}</span><div><b>${T(d.titulo)}</b><p>${T(d.texto)}</p></div>
-    <a class="btn btn-wa magnetico" href="${esc(waLink(tx(d.mensaje) || msjClaudio()))}" target="_blank" rel="noopener">${icono('wa')} ${T(d.boton) || t('hablar_claudio')}</a></div>`; }
+  render(d){ return `<div class="b-wa" data-aparece><span class="b-wa-ico">${icono('wa')}</span><div><b${edd('titulo')}>${T(d.titulo)}</b><p${edd('texto')}>${T(d.texto)}</p></div>
+    <a class="btn btn-wa magnetico" href="${esc(waLink(tx(d.mensaje) || msjClaudio()))}" target="_blank" rel="noopener">${icono('wa')} <span${edd('boton')}>${T(d.boton) || t('hablar_claudio')}</span></a></div>`; }
 });
 
 const CAMPOS_FORM = [['nombre', 'Nombre'], ['tel', 'Teléfono'], ['email', 'Correo'], ['ciudad', 'Ciudad'], ['msg', 'Mensaje']];
@@ -113,7 +113,7 @@ registrarBloque('mapa', { nombre: 'Mapa y horarios', grupo: 'Contacto', icono: '
 registrarBloque('enlaces', { nombre: 'Lista de enlaces', grupo: 'Contacto', icono: 'enlace', angosto: true,
   campos: [['titulo', 'Título (opcional)', 'i18n'], ['items', 'Enlaces', 'items', [['texto', 'Texto', 'i18n'], ['url', 'Link', 'url'], ['icono', 'Ícono', 'icono']]]],
   render(d){ return `${cabeceraB({ titulo: d.titulo }, true)}<div class="b-enlaces">${(d.items || []).map(x => { const h = urlDe(x.url);
-    return `<a class="b-enlace" data-aparece href="${esc(h)}"${externo(h) ? ' target="_blank" rel="noopener"' : ''}>${icono(x.icono || 'enlace')}<span>${T(x.texto)}</span>${icono('flecha')}</a>`; }).join('')}</div>`; }
+    return `<a class="b-enlace" data-aparece href="${esc(h)}"${externo(h) ? ' target="_blank" rel="noopener"' : ''}>${icono(x.icono || 'enlace')}<span${edd('items.' + d.items.indexOf(x) + '.texto')}>${T(x.texto)}</span>${icono('flecha')}</a>`; }).join('')}</div>`; }
 });
 
 registrarBloque('instagram', { nombre: 'Grilla de Instagram', grupo: 'Instagram', icono: 'instagram', fondo: 'niebla',
@@ -132,7 +132,7 @@ registrarBloque('instagram', { nombre: 'Grilla de Instagram', grupo: 'Instagram'
 
 registrarBloque('reel', { nombre: 'Reel destacado', grupo: 'Instagram', icono: 'play', fondo: 'noche',
   campos: [...CAMPOS_CAB, ['url', 'Link del reel o publicación de Instagram (o un video)', 'video'], ['boton', 'Botón (opcional)', 'boton']],
-  render(d){ return `<div class="b-reel"><div class="b-reel-txt">${cabeceraB(d)}<div class="b-botones">${botonB(d.boton, 'btn-blanco')}<a class="btn btn-vidrio" href="${esc(Datos.get().config.instagram)}" target="_blank" rel="noopener">${icono('instagram')} ${t('ver_ig')}</a></div></div>
+  render(d){ return `<div class="b-reel"><div class="b-reel-txt">${cabeceraB(d)}<div class="b-botones">${botonB(d.boton, 'btn-blanco', 'boton')}<a class="btn btn-vidrio" href="${esc(Datos.get().config.instagram)}" target="_blank" rel="noopener">${icono('instagram')} ${t('ver_ig')}</a></div></div>
     <div class="b-reel-cel" data-aparece="der"><div class="telefono">${videoHTML(d.url, { vertical: true, auto: !/instagram|youtu/.test(d.url || '') }) || ''}</div></div></div>`; }
 });
 
@@ -141,4 +141,12 @@ registrarBloque('novedades', { nombre: 'Últimas novedades', grupo: 'Novedades',
   render(d){ const l = novedadesVisibles().filter(n => !d.cat || n.cat === d.cat).slice(0, Number(d.cantidad) || 3);
     return `<div class="b-cab-fila">${cabeceraB(d)}<a class="enlace" href="#/novedades">${IDIOMA === 'pt' ? 'Ver todas' : 'Ver todas'} ${icono('flecha')}</a></div>
       <div class="nv-grilla">${l.map(tarjetaNovedad).join('') || '<p class="b-vacia">Todavía no hay novedades publicadas.</p>'}</div>`; }
+});
+
+// Un post o reel de Instagram, tal cual, con texto y botón al costado (24/11/2026, pedido de la usuaria)
+registrarBloque('igpost', { nombre: 'Post de Instagram', grupo: 'Instagram', icono: 'instagram', fondo: 'blanco',
+  campos: [['url', 'Link del post o reel de Instagram', 'video'], ...CAMPOS_CAB, ['lado', 'El post va', 'select', [['izq', 'A la izquierda'], ['der', 'A la derecha']]], ['boton', 'Botón (opcional)', 'boton']],
+  render(d){ const ok = /instagram\.com\//.test(d.url || '');
+    return `<div class="b-igpost ${d.lado === 'der' ? 'der' : ''}"><div class="b-igpost-post" data-aparece="zoom">${ok ? videoHTML(d.url) : `<div class="b-vacia">${icono('instagram')}<p>Pegá el link del post en el Estudio<br>(en Instagram: ⋯ → Copiar enlace).</p></div>`}</div>
+      <div class="b-igpost-txt">${cabeceraB(d)}<div class="b-botones">${botonB(d.boton, '', 'boton')}<a class="btn btn-borde" href="${esc(ok ? d.url : Datos.get().config.instagram)}" target="_blank" rel="noopener">${icono('instagram')} ${t('ver_ig')}</a></div></div></div>`; }
 });

@@ -38,15 +38,19 @@ function urlDe(u){
   return u ? '#/' + u.replace(/^\/+/, '') : '#';
 }
 const externo = u => /^https?:|^tel:|^mailto:/.test(u) && !/^#/.test(u);
-function botonB(b, cls){
+// «ruta» = dónde está el botón dentro del bloque (para escribir su texto directo en la vista previa)
+function botonB(b, cls, ruta){
   if (!b || !tx(b.txt)) return '';
   const h = urlDe(b.url), wa = /wa\.me/.test(h);
-  return `<a class="btn ${wa ? 'btn-wa' : (cls || 'btn-azul')} magnetico" href="${esc(h)}"${externo(h) ? ' target="_blank" rel="noopener"' : ''}>${wa ? icono('wa') : ''}${T(b.txt)}${!wa && !externo(h) ? ' ' + icono('flecha') : ''}</a>`;
+  return `<a class="btn ${wa ? 'btn-wa' : (cls || 'btn-azul')} magnetico" href="${esc(h)}"${externo(h) ? ' target="_blank" rel="noopener"' : ''}>${wa ? icono('wa') : ''}<span${ruta ? edd(ruta + '.txt') : ''}>${T(b.txt)}</span>${!wa && !externo(h) ? ' ' + icono('flecha') : ''}</a>`;
 }
+const edd = r => ed('d:' + r);                                   // texto del bloque que se escribe directo en la vista previa
+const edmd = r => EN_EDITOR ? ` data-ed-md="d:${r}"` : '';        // texto con formato: al tocarlo se abre su campo
+const edimg = r => EN_EDITOR ? ` data-ed-img="d:${r}"` : '';      // foto: al tocarla se elige otra
 function cabeceraB(d, centro){
   if (!tx(d.etiqueta) && !tx(d.titulo) && !tx(d.texto)) return '';
-  return `<div class="b-cab ${centro ? 'centro' : ''}">${tx(d.etiqueta) ? `<span class="etiqueta"><i></i>${T(d.etiqueta)}</span>` : ''}
-    ${tx(d.titulo) ? `<h2 class="titulo chico" data-dividir>${T(d.titulo)}</h2>` : ''}${tx(d.texto) ? `<div class="sub b-md">${md(d.texto)}</div>` : ''}</div>`;
+  return `<div class="b-cab ${centro ? 'centro' : ''}">${tx(d.etiqueta) ? `<span class="etiqueta"><i></i><span${edd('etiqueta')}>${T(d.etiqueta)}</span></span>` : ''}
+    ${tx(d.titulo) ? `<h2 class="titulo chico" data-dividir${edd('titulo')}>${T(d.titulo)}</h2>` : ''}${tx(d.texto) ? `<div class="sub b-md"${edmd('texto')}>${md(d.texto)}</div>` : ''}</div>`;
 }
 // Video: YouTube, Instagram (publicación o reel), o un archivo (.mp4 / del Drive)
 function videoHTML(url, opc){

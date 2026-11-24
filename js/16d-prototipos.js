@@ -53,6 +53,7 @@ const PROTOTIPOS = [
   ['k-mapa', 'Mapa y horarios', 'Contacto', 'Mapa de Google, dirección, horarios y teléfonos.', 'mapa', 'claro', { titulo: Lx('Visitanos en Rivera', 'Visite-nos em Rivera'), direccion: '', horarios: true }],
   ['k-enlaces', 'Lista de enlaces', 'Contacto', 'Botones uno abajo del otro, como en el link de la bio.', 'enlaces', 'claro', { titulo: Lx('Accesos rápidos', 'Acessos rápidos'), items: [{ texto: Lx('Tienda', 'Loja'), url: '#/tienda', icono: 'carrito' }, { texto: Lx('Cursos', 'Cursos'), url: '#/cursos', icono: 'calendario' }, { texto: Lx('WhatsApp', 'WhatsApp'), url: 'wa:', icono: 'wa' }] }],
   // --- Instagram y novedades ---
+  ['g-post', 'Post de Instagram', 'Instagram', 'Un post o reel de Instagram tal cual, con texto y botón al costado.', 'igpost', 'blanco', { url: 'https://www.instagram.com/dragur_rivera_drones_del_pampa/reel/DfmWaXtTXCj/', etiqueta: Lx('En Instagram', 'No Instagram'), titulo: Lx('Mirá lo último que publicamos', 'Veja o que publicamos'), texto: Lx('Seguinos para ver lanzamientos, consejos del taller y trabajos en el campo.', 'Siga-nos para ver lançamentos, dicas da oficina e trabalhos no campo.'), lado: 'izq', boton: { txt: Lx('Consultar por WhatsApp', 'Consultar pelo WhatsApp'), url: 'wa:Vi la publicación de Instagram y quiero consultar' } }],
   ['g-grilla', 'Grilla de Instagram', 'Instagram', 'Las últimas publicaciones de su Instagram.', 'instagram', 'niebla', { titulo: {}, cantidad: 8, estilo: 'grilla' }],
   ['g-reel', 'Reel destacado', 'Instagram', 'Un reel dentro de un celular, con texto al costado.', 'reel', 'noche', { etiqueta: Lx('Instagram', 'Instagram'), titulo: Lx('Mirá lo último del taller', 'Veja o último da oficina'), url: 'media/instagram/ig-t70p.mp4' }],
   ['g-seguinos', 'Seguinos en Instagram', 'Instagram', 'Una franja que invita a seguirlos.', 'aviso', 'claro', { texto: Lx('Seguinos en Instagram: @dragur_rivera_drones_del_pampa', 'Siga no Instagram: @dragur_rivera_drones_del_pampa'), url: 'https://www.instagram.com/dragur_rivera_drones_del_pampa/', icono: 'instagram', estilo: 'azul' }],
@@ -76,5 +77,6 @@ const PLANTILLAS = [
   ['pl-evento', 'Evento o jornada de campo', 'Una jornada, demostración o lanzamiento en el local.', 'usuarios', ['p-cuenta', 't-centro', 'f-mosaico', 'k-mapa', 'k-form']],
   ['pl-servicio', 'Un servicio', 'Para vender un servicio (pulverización, service, registro).', 'motor', ['p-partida', 'i-tarjetas', 'v-precios', 'i-faq', 'k-cta-azul']],
   ['pl-nosotros', 'Historia de la empresa', 'Quiénes son, la historia con fechas, el equipo y las marcas.', 'usuarios', ['p-centrada', 't-img-izq', 'i-linea', 'c-equipo', 'c-logos', 'k-cta']],
+  ['pl-instagram', 'Post de Instagram', 'Una página armada a partir de un post o reel: el post, un texto, WhatsApp y más publicaciones.', 'instagram', ['g-post', 'k-wa', 'g-grilla']],
   ['pl-blanco', 'Página en blanco', 'Arrancá de cero y agregá los bloques que quieras.', 'plantilla', []]
 ];

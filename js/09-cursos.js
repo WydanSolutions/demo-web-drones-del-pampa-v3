@@ -21,7 +21,7 @@ PAGINAS.cursos = {
 function listaCursosHTML(){
   const T = Datos.get().textos;
   return `<section class="cabeza-pag noche-pag"><video class="cabeza-video" src="media/video/t100-lidar.mp4" poster="media/video/t100-lidar.jpg" autoplay muted loop playsinline></video><div class="cabeza-velo"></div>
-      <div class="contenedor cabeza-in"><div><span class="etiqueta"><i></i>Academia · Rivera</span><h1 class="titulo" data-dividir>${esc(tx(T.cursosTitulo))}</h1><p class="sub">${esc(tx(T.cursosSub))}</p></div></div></section>
+      <div class="contenedor cabeza-in"><div><span class="etiqueta"><i></i>Academia · Rivera</span><h1 class="titulo" data-dividir${ed('g:textos.cursosTitulo')}>${esc(tx(T.cursosTitulo))}</h1><p class="sub"${ed('g:textos.cursosSub')}>${esc(tx(T.cursosSub))}</p></div></div></section>
     <section class="bloque pegado"><div class="contenedor cursos-lista">${cursosVisibles().map((c, i) => {
       const f = fechaCorta(c.fecha), libres = libresDe(c), total = Number(c.cupos) || 1, ocup = Math.min(100, Math.round((total - libres) / total * 100));
       return `<a class="curso foco" href="#/cursos/${c.id}" data-aparece>

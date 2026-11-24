@@ -25,12 +25,12 @@ const SIS_INICIO = {
         ${portadaFondo(P)}
         <div class="hero-grid">
           <div class="hero-txt">
-            <span class="hero-chip">${icono('escudo')} ${esc(tx(T.heroEtiqueta))}</span>
-            <h1 class="hero-titulo" data-dividir>${esc(tx(T.heroTitulo))}</h1>
-            <p class="hero-sub">${esc(tx(T.heroSub))}</p>
+            <span class="hero-chip">${icono('escudo')} <span${ed('g:textos.heroEtiqueta')}>${esc(tx(T.heroEtiqueta))}</span></span>
+            <h1 class="hero-titulo" data-dividir${ed('g:textos.heroTitulo')}>${esc(tx(T.heroTitulo))}</h1>
+            <p class="hero-sub"${ed('g:textos.heroSub')}>${esc(tx(T.heroSub))}</p>
             <div class="hero-botones">
-              <a class="btn btn-blanco magnetico" href="#/drones">${t('ver_drones')} ${icono('flecha')}</a>
-              <a class="btn btn-vidrio magnetico" href="#/tienda">${t('ir_tienda')}</a>
+              <a class="btn btn-blanco magnetico" href="${esc(urlDe(tx(T.heroBtn1Url) || '#/drones'))}"><span${ed('g:textos.heroBtn1')}>${esc(tx(T.heroBtn1) || t('ver_drones'))}</span> ${icono('flecha')}</a>
+              <a class="btn btn-vidrio magnetico" href="${esc(urlDe(tx(T.heroBtn2Url) || '#/tienda'))}"><span${ed('g:textos.heroBtn2')}>${esc(tx(T.heroBtn2) || t('ir_tienda'))}</span></a>
             </div>
           </div>
           <div class="hero-escena">${portadaEscena(P, t100)}</div>
@@ -49,7 +49,7 @@ const SIS_INICIO = {
   accesos(){ const { d, T, cl, t100, accesos, curso, promos, P } = datosInicio();
     return `<section class="bloque buscas">
       <div class="contenedor">
-        <div class="cabecera"><div><span class="etiqueta"><i></i>Drones del Pampa</span><h2 class="titulo" data-dividir>${esc(tx(T.buscasTitulo))}</h2></div></div>
+        <div class="cabecera"><div><span class="etiqueta"><i></i>Drones del Pampa</span><h2 class="titulo" data-dividir${ed('g:textos.buscasTitulo')}>${esc(tx(T.buscasTitulo))}</h2></div></div>
         <div class="accesos">${accesos.map(([ruta, k, kd, img], i) => `
           <a class="acceso foco" href="#/${ruta}" data-aparece style="--i:${i}">
             <img src="${esc(img)}" alt="" loading="lazy"><span class="acceso-velo"></span>
@@ -69,8 +69,8 @@ const SIS_INICIO = {
         </div>
         <div class="claudio-txt">
           <span class="etiqueta"><i></i>${esc(cl.nombre)} · ${esc(tx(cl.cargo))}</span>
-          <h2 class="titulo" data-dividir>${esc(tx(T.claudioTitulo))}</h2>
-          <blockquote data-aparece>“${esc(tx(cl.frase))}”</blockquote>
+          <h2 class="titulo" data-dividir${ed('g:textos.claudioTitulo')}>${esc(tx(T.claudioTitulo))}</h2>
+          <blockquote data-aparece>“<span${ed('g:claudio.frase')}>${esc(tx(cl.frase))}</span>”</blockquote>
           <div class="firma" data-aparece><svg viewBox="0 0 220 60"><path d="M8 42 C 30 10 44 12 38 40 S 60 52 72 24 S 92 30 96 42 S 120 14 132 36 S 150 46 162 28 S 190 26 212 34"/></svg><span>${esc(cl.nombre)}</span></div>
           <div class="valores">${d.valores.map(v => `<div class="valor" data-aparece>${icono(v.icono)}<b>${esc(tx(v.t))}</b><span>${esc(tx(v.d))}</span></div>`).join('')}</div>
           <a class="btn btn-wa magnetico" href="${waLink(msjClaudio())}" target="_blank" rel="noopener" data-aparece>${icono('wa')} ${t('hablar_claudio')}</a>
@@ -82,7 +82,7 @@ const SIS_INICIO = {
   destacados(){ const { d, T, cl, t100, accesos, curso, promos, P } = datosInicio();
     return `<section class="bloque noche destacados">
       <div class="contenedor">
-        <div class="cabecera"><div><span class="etiqueta"><i></i>DJI Agriculture</span><h2 class="titulo" data-dividir>${t('destacados')}</h2></div>
+        <div class="cabecera"><div><span class="etiqueta"><i></i>DJI Agriculture</span><h2 class="titulo" data-dividir${ed('g:textos.destacadosTitulo')}>${esc(tx(T.destacadosTitulo) || t('destacados'))}</h2></div>
           <div class="carrusel-flechas" data-aparece><button onclick="moverCarrusel(-1)" aria-label="‹">${icono('flecha')}</button><button onclick="moverCarrusel(1)" aria-label="›">${icono('flecha')}</button>
             <a class="enlace" href="#/drones">${t('ver_todo')} ${icono('flecha')}</a></div></div>
       </div>
@@ -104,7 +104,7 @@ const SIS_INICIO = {
   promos(){ const { d, T, cl, t100, accesos, curso, promos, P } = datosInicio();
     return `${promos.length ? `<section class="bloque">
       <div class="contenedor">
-        <div class="cabecera"><div><span class="etiqueta"><i></i>${t('promos')}</span><h2 class="titulo chico" data-dividir>${IDIOMA === 'pt' ? 'Oportunidades deste mês' : 'Oportunidades de este mes'}</h2></div></div>
+        <div class="cabecera"><div><span class="etiqueta"><i></i>${t('promos')}</span><h2 class="titulo chico" data-dividir${ed('g:textos.promosTitulo')}>${esc(tx(T.promosTitulo) || (IDIOMA === 'pt' ? 'Oportunidades deste mês' : 'Oportunidades de este mes'))}</h2></div></div>
         <div class="promos">${promos.map(tarjetaPromo).join('')}</div>
       </div>
     </section>` : ''}`; },

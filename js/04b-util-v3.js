@@ -51,3 +51,5 @@ const tamano = b => b > 1048576 ? (b / 1048576).toLocaleString('es-UY', { maximu
 // Carga un script de una CDN una sola vez (ej. el generador de QR)
 const _scripts = {};
 function cargarScript(src){ return _scripts[src] || (_scripts[src] = new Promise((ok, mal) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = mal; document.head.appendChild(s); })); }
+// Marca un texto como editable desde la vista previa del Estudio (ruta en los datos: «g:textos.heroTitulo» o «d:titulo» dentro del bloque)
+const ed = r => (/[?&]vista=1\b/.test(location.search) ? ` data-ed="${r}"` : '');

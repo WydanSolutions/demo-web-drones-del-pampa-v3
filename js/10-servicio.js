@@ -11,7 +11,7 @@ PAGINAS.servicio = {
     return `<section class="serv-hero">
         <div class="contenedor serv-hero-in">
           <div class="serv-hero-txt"><span class="etiqueta"><i></i>${t('p_servicio')} · Rivera</span>
-            <h1 class="titulo" data-dividir>${esc(tx(T.servTitulo))}</h1><p class="sub">${esc(tx(T.servSub))}</p>
+            <h1 class="titulo" data-dividir${ed('g:textos.servTitulo')}>${esc(tx(T.servTitulo))}</h1><p class="sub"${ed('g:textos.servSub')}>${esc(tx(T.servSub))}</p>
             <div class="serv-garantia">${icono('escudo')}<div><b>${t('garantia')}</b><span>${t('garantia_txt')}</span></div></div>
             <a class="btn btn-azul magnetico" href="#turno" onclick="event.preventDefault();irATurno()">${icono('calendario')} ${t('agendar')}</a></div>
           <div class="serv-hero-foto ${cl.videoServicio ? 'con-video' : ''}" data-aparece="zoom">${cl.videoServicio

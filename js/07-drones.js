@@ -39,7 +39,7 @@ function catalogoHTML(){
   return `<section class="cabeza-pag">
       <div class="cabeza-fondo">${fondoTopo()}</div>
       <div class="contenedor cabeza-in">
-        <div><span class="etiqueta"><i></i>DJI Agriculture · ${t('p_drones')}</span><h1 class="titulo" data-dividir>${esc(tx(T.dronesTitulo))}</h1><p class="sub">${esc(tx(T.dronesSub))}</p></div>
+        <div><span class="etiqueta"><i></i>DJI Agriculture · ${t('p_drones')}</span><h1 class="titulo" data-dividir${ed('g:textos.dronesTitulo')}>${esc(tx(T.dronesTitulo))}</h1><p class="sub"${ed('g:textos.dronesSub')}>${esc(tx(T.dronesSub))}</p></div>
         <button class="asesor-btn foco" onclick="abrirAsesor()"><span class="ab-ico">${icono('estrella')}</span><b>${t('asesor')}</b><span>${IDIOMA === 'pt' ? '3 perguntas · 20 segundos' : '3 preguntas · 20 segundos'}</span>${icono('flecha')}</button>
       </div>
     </section>

@@ -25,6 +25,7 @@ function campoEs(r, et, tipo, op, v){
     case 'check': return `<label class="ae-check ce"><input type="checkbox" data-r="${r}" data-k="check" ${v ? 'checked' : ''}><span></span>${esc(et)}</label>`;
     case 'select': h = `<select data-r="${r}">${op.map(([val, n]) => `<option value="${esc(val)}" ${String(v ?? '') === String(val) ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>`; break;
     case 'i18n': h = i18(false); break;
+    case 'i18narea': h = i18(true); break;
     case 'md': h = `<div class="ce-md"><div class="ce-md-barra"><button type="button" data-md="**" title="Negrita"><b>N</b></button><button type="button" data-md="*" title="Cursiva"><i>C</i></button>
       <button type="button" data-md="link" title="Link">${icono('enlace')}</button><button type="button" data-md="lista" title="Lista">${icono('menu')}</button><small>Línea en blanco = párrafo nuevo</small></div>${i18(true)}</div>`; break;
     case 'img': h = `<div class="ce-img">${v ? `<img src="${esc(v)}" alt="">` : `<span>${icono('imagen')}</span>`}<div>

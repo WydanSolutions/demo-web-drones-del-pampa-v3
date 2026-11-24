@@ -62,6 +62,7 @@ function nuevaPagina(){
       <small>${ps.length ? ps.length + ' bloques' : 'Vacía'}</small></button>`).join('')}</div>
     <div class="es-nueva-datos" hidden><div class="grilla-form"><div class="campo"><label>Nombre de la página</label><input id="np-nombre" placeholder="Ej.: Promo de diciembre"></div>
       <div class="campo"><label>Dónde va en el menú</label><select id="np-menu">${LUGAR_MENU.map(([v, n]) => `<option value="${v}" ${v === 'mas' ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
+      <div class="campo es-np-ig" hidden><label>Link del post o reel de Instagram (en Instagram: ⋯ → Copiar enlace)</label><input id="np-ig" placeholder="https://www.instagram.com/reel/…"><span class="error">Pegá un link de Instagram</span></div>
       <p class="es-np-link">La dirección va a ser: <b id="np-link">#/…</b></p>
       <div class="es-modal-pie"><button class="btn btn-borde btn-chico" onclick="nuevaPagina()">← Otra plantilla</button><button class="btn btn-verde btn-chico" id="np-crear">${icono('check')} Crear la página</button></div></div></div>`, { cls: 'grande' });
   $$('[data-pl]').forEach(b => b.onclick = () => {
@@ -69,9 +70,13 @@ function nuevaPagina(){
     $$('.es-plantilla').forEach(x => x.classList.toggle('act', x === b)); $('.es-plantillas').classList.add('elegida'); $('.es-nueva-datos').hidden = false;
     const nom = $('#np-nombre'); if (!nom.value) nom.value = pl[0] === 'pl-blanco' ? '' : pl[1]; nom.focus();
     const upd = () => $('#np-link').textContent = '#/' + slugUnico(nom.value || 'pagina'); nom.oninput = upd; upd();
+    const conIG = pl[0] === 'pl-instagram'; $('.es-np-ig').hidden = !conIG;
     $('#np-crear').onclick = () => {
       const n = nom.value.trim(); if (!n) { nom.closest('.campo').classList.add('mal'); return; }
+      const ig = conIG ? $('#np-ig').value.trim().split('?')[0] : '';
+      if (conIG && ig && !/instagram\.com\//.test(ig)) { $('#np-ig').closest('.campo').classList.add('mal'); return; }
       const p = { id: slugUnico(n), sistema: false, titulo: { es: n, pt: '' }, icono: pl[3], menu: $('#np-menu').value, seo: {}, bloques: pl[4].map(bloqueDesdeProto).filter(Boolean) };
+      if (ig) { const b = p.bloques.find(x => x.tipo === 'igpost'); if (b) b.d.url = ig; if (!Datos.get().instagram.some(x => x.url === ig)) Datos.get().instagram.unshift({ img: '', url: ig, video: '' }); }
       Datos.get().paginas.push(p); Datos.guardar(); cerrarModal(); editarPagina(p.id); aviso('Página creada. Tocá un bloque para editarlo.');
     };
   });
@@ -104,9 +109,10 @@ function ajustesPagina(id){
 /* ---------- Editor de una página ---------- */
 function editorPaginaHTML(){
   const p = paginaDe(_pg.id);
-  return `<div class="pe pe-tab-${_pg.tab}">
+  return `<div class="pe pe-tab-${_pg.tab} ${_pg.lista ? '' : 'sin-lista'}">
     <div class="pe-barra">
       <button class="btn btn-borde btn-chico" onclick="_pg.id=null;recordarPagina(null);adminIr('paginas')">${icono('flecha')}<span>Páginas</span></button>
+      <button class="pe-lista-btn ${_pg.lista ? 'act' : ''}" id="pe-btn-lista" onclick="peAlternarLista()" title="Mostrar u ocultar la lista de bloques">${icono('capas')}</button>
       <select class="pe-pagina" onchange="editarPagina(this.value)" aria-label="Página">${Datos.get().paginas.map(x => `<option value="${x.id}" ${x.id === p.id ? 'selected' : ''}>${esc(tituloPagina(x))}</option>`).join('')}</select>
       <div class="pe-tabs">${[['bloques', 'capas', 'Bloques'], ['vista', 'ojo', 'Ver'], ['editar', 'editar', 'Editar']].map(([k, ic, n]) => `<button data-petab="${k}" class="${_pg.tab === k ? 'act' : ''}">${icono(ic)}${n}</button>`).join('')}</div>
       <div class="pe-disp"><button data-disp="compu" class="${_pg.disp === 'compu' ? 'act' : ''}" title="Ver como en la compu">${icono('compu')}</button><button data-disp="celular" class="${_pg.disp === 'celular' ? 'act' : ''}" title="Ver como en el celular">${icono('celular')}</button></div>
@@ -123,7 +129,7 @@ function editorPaginaHTML(){
 function iniciarEditorPagina(c){
   c.classList.add('editando'); $('#admin').classList.add('enfoque');
   peListaBloques(); peInspector(); requestAnimationFrame(peEscalar);
-  $$('[data-petab]', c).forEach(b => b.onclick = () => { _pg.tab = b.dataset.petab; $('.pe').className = 'pe pe-tab-' + _pg.tab; $$('[data-petab]').forEach(x => x.classList.toggle('act', x === b)); peEscalar(); });
+  $$('[data-petab]', c).forEach(b => b.onclick = () => { _pg.tab = b.dataset.petab; $('.pe').className = 'pe pe-tab-' + _pg.tab + (_pg.lista ? '' : ' sin-lista'); $$('[data-petab]').forEach(x => x.classList.toggle('act', x === b)); peEscalar(); });
   $$('[data-disp]', c).forEach(b => b.onclick = () => { _pg.disp = b.dataset.disp; $('#pe-marco').className = 'pe-marco ' + _pg.disp; $$('[data-disp]').forEach(x => x.classList.toggle('act', x === b)); peEscalar(); });
   const fr = $('#pe-iframe'); fr.onload = () => { $('#pe-cargando').hidden = true; peEscalar(); if (_pg.sel) peMarcar(_pg.sel); };
   if (!window._peRO) { window._peRO = new ResizeObserver(() => peEscalar()); }
@@ -140,10 +146,41 @@ function peEscalar(){
 function pePrevia(){ const fr = $('#pe-iframe'); if (fr && fr.contentWindow) fr.contentWindow.postMessage({ dp: 'recargar' }, '*'); }
 function peMarcar(id){ const fr = $('#pe-iframe'); if (fr && fr.contentWindow) fr.contentWindow.postMessage({ dp: 'marcar', id }, '*'); }
 Datos.alCambiar(() => { if (_esAbierto && _esSec === 'paginas' && _pg.id) { clearTimeout(window._pePrev); window._pePrev = setTimeout(() => { prepararPaginas(); pePrevia(); }, 140); } });
-window.addEventListener('message', e => {
-  const m = e.data || {}; if (!_esAbierto || !m.dp) return;
-  if (m.dp === 'elegir') { peElegir(m.id, true); if (MOVIL()) { _pg.tab = 'editar'; const pe = $('.pe'); if (pe) pe.className = 'pe pe-tab-editar'; $$('[data-petab]').forEach(x => x.classList.toggle('act', x.dataset.petab === 'editar')); } }
+// Lo que llega de la vista previa: elegir, escribir directo, cambiar foto, barra del bloque, agregar acá
+window.addEventListener('message', async e => {
+  const m = e.data || {}; if (!_esAbierto || !m.dp || !_pg.id) return;
+  if (m.dp === 'elegir') { if (_pg.sel !== m.id) peElegir(m.id, true); }
+  else if (m.dp === 'campo') { if (_pg.sel !== m.id) peElegir(m.id, true); peResaltarCampo(m.ed); }
+  else if (m.dp === 'texto') peTextoDesdeVista(m);
+  else if (m.dp === 'fin') { clearTimeout(_pg.aGuardar); Datos.guardar(); pePrevia(); peListaBloques(); }
+  else if (m.dp === 'imagen') await peFotoDesdeVista(m.id, m.ed);
+  else if (m.dp === 'accion') {
+    if (m.acc === 'foto') { const b = buscarBloque(m.id), f = b && BLOQUES[b.tipo] && BLOQUES[b.tipo].campos.find(c => c[2] === 'img'); if (f) await peFotoDesdeVista(m.id, 'd:' + f[0]); }
+    else peAccion(m.id, m.acc);
+  }
+  else if (m.dp === 'agregar') { _pg.sel = m.despues; peListaBloques(); bibliotecaBloques(); }
 });
+// «g:textos.heroTitulo» = desde la raíz de los datos · «d:titulo» = dentro del bloque
+function peRaiz(id, ed){ return ed.startsWith('g:') ? [Datos.get(), ed.slice(2)] : [(buscarBloque(id) || {}).d || {}, ed.slice(2)]; }
+function peTextoDesdeVista(m){
+  const [raiz, ruta] = peRaiz(m.id, m.ed), actual = leerEn(raiz, ruta);
+  const r2 = typeof actual === 'string' && actual !== '' ? ruta : ruta + '.' + IDIOMA;
+  ponerEn(raiz, r2, m.valor);
+  const inp = $(`#pe-insp [data-r="${CSS.escape(r2)}"]`); if (inp && document.activeElement !== inp) inp.value = m.valor;
+  clearTimeout(_pg.aGuardar); _pg.aGuardar = setTimeout(() => Datos.guardar(), 300);
+}
+async function peFotoDesdeVista(id, ed){
+  const [raiz, ruta] = peRaiz(id, ed); const r = await elegirArchivo({ tipo: 'imagen' }); if (!r) return;
+  ponerEn(raiz, ruta, r); Datos.guardar(); peInspector(); aviso('Foto cambiada.');
+}
+// Marca en el panel el campo del texto que se tocó en la página
+function peResaltarCampo(ed){
+  const ruta = ed.slice(2), c = $(`#pe-insp [data-campo="${CSS.escape(ruta)}"]`); if (!c) return;
+  const det = c.closest('details'); if (det) det.open = true;
+  c.scrollIntoView({ block: 'center', behavior: 'smooth' }); c.classList.remove('ce-flash'); void c.offsetWidth; c.classList.add('ce-flash');
+}
+function peAlternarLista(){ _pg.lista = !_pg.lista; try { localStorage.setItem('dp_es_lista', _pg.lista ? '1' : '0'); } catch (er) {} const pe = $('.pe'); if (pe) pe.classList.toggle('sin-lista', !_pg.lista); $('#pe-btn-lista').classList.toggle('act', _pg.lista); setTimeout(peEscalar, 50); }
+_pg.lista = (() => { try { return localStorage.getItem('dp_es_lista') !== '0'; } catch (e) { return true; } })();
 
 function peListaBloques(){
   const l = $('#pe-lista'); if (!l) return; const p = paginaDe(_pg.id);
@@ -180,12 +217,30 @@ function peElegir(id, desdeVista){
   _pg.sel = id; $$('.pe-bq').forEach(x => x.classList.toggle('act', x.dataset.id === id));
   peInspector(); if (!desdeVista) peMarcar(id);
   const el = $(`.pe-bq[data-id="${id}"]`); if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  if (MOVIL() && !desdeVista) { _pg.tab = 'editar'; const pe = $('.pe'); if (pe) pe.className = 'pe pe-tab-editar'; $$('[data-petab]').forEach(x => x.classList.toggle('act', x.dataset.petab === 'editar')); }
+  if (MOVIL() && !desdeVista) { _pg.tab = 'editar'; const pe = $('.pe'); if (pe) pe.className = 'pe pe-tab-editar' + (_pg.lista ? '' : ' sin-lista'); $$('[data-petab]').forEach(x => x.classList.toggle('act', x.dataset.petab === 'editar')); }
 }
 
 // Dónde se edita cada parte fija
 const EDITA_PARTE = { portada: ['config', 'Marca y datos (la portada) y Textos fijos'], cinta: [null, 'Es fija'], accesos: ['textos', 'Textos fijos'], claudio: ['claudio', 'Claudio (el dueño)'],
   campo: [null, 'Es un juego fijo'], destacados: ['drones', 'Drones'], explorar: ['drones', 'Drones'], curso: ['cursos', 'Cursos'], promos: ['promos', 'Promociones'], instagram: ['instagram', 'Instagram'] };
+// Lo que se edita directo de cada parte fija (rutas desde la raíz de los datos)
+const CAMPOS_PARTE = {
+  portada: [['config.portada', 'Fondo de la portada', 'select', PORTADAS], ['textos.heroEtiqueta', 'Etiqueta de arriba', 'i18n'], ['textos.heroTitulo', 'Título grande', 'i18n'],
+    ['textos.heroSub', 'Texto', 'i18narea'], ['textos.heroBtn1', 'Botón blanco · texto (vacío = «Ver los drones»)', 'i18n'], ['textos.heroBtn1Url', 'Botón blanco · a dónde lleva', 'url'],
+    ['textos.heroBtn2', 'Segundo botón · texto (vacío = «Ir a la tienda»)', 'i18n'], ['textos.heroBtn2Url', 'Segundo botón · a dónde lleva', 'url'], ['claudio.foto', 'Foto de Claudio (tarjeta de abajo)', 'img']],
+  accesos: [['textos.buscasTitulo', 'Título', 'i18n']],
+  claudio: [['textos.claudioTitulo', 'Título', 'i18n'], ['claudio.frase', 'Frase de Claudio', 'i18narea'], ['claudio.foto2', 'Foto grande', 'img'], ['claudio.video', 'Video del celular', 'video']],
+  destacados: [['textos.destacadosTitulo', 'Título (vacío = «Drones destacados»)', 'i18n']],
+  promos: [['textos.promosTitulo', 'Título (vacío = «Oportunidades de este mes»)', 'i18n']]
+};
+const CAMPOS_PAGINA = {
+  drones: [['textos.dronesTitulo', 'Título de la página', 'i18n'], ['textos.dronesSub', 'Texto de la página', 'i18narea']],
+  tienda: [['textos.tiendaTitulo', 'Título de la página', 'i18n'], ['textos.tiendaSub', 'Texto de la página', 'i18narea']],
+  cursos: [['textos.cursosTitulo', 'Título de la página', 'i18n'], ['textos.cursosSub', 'Texto de la página', 'i18narea']],
+  servicio: [['textos.servTitulo', 'Título de la página', 'i18n'], ['textos.servSub', 'Texto de la página', 'i18narea']],
+  nosotros: [['textos.nosTitulo', 'Título de la página', 'i18n'], ['claudio.historia', 'Historia de la empresa', 'i18narea'], ['claudio.frase', 'Frase de Claudio', 'i18narea']],
+  contacto: [['textos.contactoTitulo', 'Título de la página', 'i18n'], ['textos.contactoSub', 'Texto de la página', 'i18narea']]
+};
 const EDITA_PAGINA = { drones: 'drones', tienda: 'productos', cursos: 'cursos', dinacia: 'dinacia', servicio: 'portada', nosotros: 'claudio', contacto: 'config', novedades: 'novedades' };
 
 function peInspector(){
@@ -193,11 +248,18 @@ function peInspector(){
   if (!b) { c.innerHTML = `<div class="pe-insp-vacio">${icono('editar')}<b>Elegí un bloque</b><p>Tocalo en la lista o directamente sobre la página para editarlo.</p>
     <button class="btn btn-verde btn-chico" onclick="bibliotecaBloques()">${icono('mas')} Agregar un bloque</button></div>`; return; }
   if (b.tipo === 'sis') {
-    const [ir, n] = b.clave === 'contenido' ? [EDITA_PAGINA[p.id], ({ drones: 'Drones', tienda: 'Productos', cursos: 'Cursos', dinacia: 'Inscripciones DINACIA', servicio: 'Más contenido', nosotros: 'Claudio y Más contenido', contacto: 'Marca y datos' })[p.id]] : (EDITA_PARTE[b.clave] || [null, '']);
-    c.innerHTML = `<div class="pe-insp-cab"><span>${icono('candado')}</span><div><b>${esc(nombreParte(p, b))}</b><small>Parte fija de la página</small></div></div>
-      <div class="pe-insp-cuerpo"><p class="pe-fijo">Esta parte la arma la página sola. Podés <b>moverla</b> u <b>ocultarla</b> desde la lista.${ir ? ` Lo que muestra se cambia en <b>${esc(n)}</b>.` : ''}</p>
-        ${ir ? `<button class="btn btn-azul btn-chico" onclick="adminIr('${ir}')">${icono('editar')} Ir a ${esc(n.split(' y ')[0])}</button>` : ''}
-        <button class="btn btn-borde btn-chico" onclick="peAccion('${b.id}','ver')">${icono(b.oculto ? 'ojo' : 'ojono')} ${b.oculto ? 'Mostrar' : 'Ocultar'} esta parte</button></div>`;
+    const [ir, n] = b.clave === 'contenido' ? [EDITA_PAGINA[p.id], ({ drones: 'Drones', tienda: 'Productos', cursos: 'Cursos', dinacia: 'Inscripciones DINACIA', servicio: 'Más contenido', nosotros: 'Claudio y Más contenido', contacto: 'Marca y datos', novedades: 'Novedades' })[p.id]] : (EDITA_PARTE[b.clave] || [null, '']);
+    const campos = b.clave === 'contenido' ? CAMPOS_PAGINA[p.id] : CAMPOS_PARTE[b.clave];
+    const pintarSis = () => {
+      c.innerHTML = `<div class="pe-insp-cab"><span>${icono('candado')}</span><div><b>${esc(nombreParte(p, b))}</b><small>Parte fija de la página</small></div>
+          <button class="pe-insp-x" onclick="_pg.sel=null;peInspector();peListaBloques()" title="Cerrar">${icono('cerrar')}</button></div>
+        <div class="pe-insp-cuerpo ae-form">${campos ? `<p class="pe-tip">${icono('editar')} También podés tocar los textos en la página y escribir ahí mismo.</p>${camposEs(campos, Datos.get())}` : ''}
+          <p class="pe-fijo">${campos ? 'El resto de esta parte' : 'Esta parte'} la arma la página sola. Podés <b>moverla</b> u <b>ocultarla</b>.${ir ? ` Lo demás se cambia en <b>${esc(n)}</b>.` : ''}</p>
+          <div class="pe-fijo-acc">${ir ? `<button class="btn btn-borde btn-chico" onclick="adminIr('${ir}')">${icono('editar')} Ir a ${esc(n.split(' y ')[0])}</button>` : ''}
+          <button class="btn btn-borde btn-chico" onclick="peAccion('${b.id}','ver')">${icono(b.oculto ? 'ojo' : 'ojono')} ${b.oculto ? 'Mostrar' : 'Ocultar'} esta parte</button></div></div>`;
+      if (campos) activarCamposEs(c, Datos.get(), estr => { clearTimeout(_pg.aGuardar); _pg.aGuardar = setTimeout(() => Datos.guardar(), estr ? 0 : 160); }, pintarSis);
+    };
+    pintarSis();
     return;
   }
   const def = BLOQUES[b.tipo]; b.d = b.d || {};
@@ -216,7 +278,7 @@ function peInspector(){
       $$('[data-fondo]', c).forEach(x => x.onclick = () => { b.fondo = x.dataset.fondo; Datos.guardar(); pintar(); });
       $$('[name=esp]', c).forEach(x => x.onchange = () => { b.espacio = x.value; Datos.guardar(); });
       $('#pe-oculto', c).onchange = e => { b.oculto = e.target.checked; Datos.guardar(); peListaBloques(); };
-    } else activarCamposEs(c, b.d, (estr) => { clearTimeout(_pg.aGuardar); _pg.aGuardar = setTimeout(() => { Datos.guardar(); if (estr) peListaBloques(); else { const s = $(`.pe-bq[data-id="${b.id}"] small`); if (s) s.textContent = tx(b.d.titulo) || tx(b.d.texto).slice(0, 40); } }, estr ? 0 : 280); }, pintar);
+    } else activarCamposEs(c, b.d, (estr) => { clearTimeout(_pg.aGuardar); _pg.aGuardar = setTimeout(() => { Datos.guardar(); if (estr) peListaBloques(); else { const s = $(`.pe-bq[data-id="${b.id}"] small`); if (s) s.textContent = tx(b.d.titulo) || tx(b.d.texto).slice(0, 40); } }, estr ? 0 : 150); }, pintar);
   };
   pintar();
 }

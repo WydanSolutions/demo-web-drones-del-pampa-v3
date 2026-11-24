@@ -29,7 +29,7 @@ PAGINAS.tienda = {
     if (q.get('modelo')) filtro.modelo = q.get('modelo');
     const T = Datos.get().textos;
     return `<section class="cabeza-pag chica"><div class="cabeza-fondo">${fondoTopo()}</div>
-        <div class="contenedor cabeza-in"><div><span class="etiqueta"><i></i>${t('p_tienda')} · Rivera</span><h1 class="titulo" data-dividir>${esc(tx(T.tiendaTitulo))}</h1><p class="sub">${esc(tx(T.tiendaSub))}</p></div>
+        <div class="contenedor cabeza-in"><div><span class="etiqueta"><i></i>${t('p_tienda')} · Rivera</span><h1 class="titulo" data-dividir${ed('g:textos.tiendaTitulo')}>${esc(tx(T.tiendaTitulo))}</h1><p class="sub"${ed('g:textos.tiendaSub')}>${esc(tx(T.tiendaSub))}</p></div>
         <img class="cabeza-dron" src="media/drones/t70p-45.png" alt="" aria-hidden="true"></div></section>
       <section class="bloque pegado"><div class="contenedor tienda-in">
         <aside class="filtros" id="filtros"></aside>

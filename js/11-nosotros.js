@@ -10,7 +10,7 @@ PAGINAS.nosotros = {
     const d = Datos.get(), T = d.textos, cl = d.claudio;
     return `<section class="nos-hero">
         <div class="contenedor nos-hero-in">
-          <div class="nos-hero-txt"><span class="etiqueta"><i></i>${t('p_nosotros')}</span><h1 class="titulo" data-dividir>${esc(tx(T.nosTitulo))}</h1>
+          <div class="nos-hero-txt"><span class="etiqueta"><i></i>${t('p_nosotros')}</span><h1 class="titulo" data-dividir${ed('g:textos.nosTitulo')}>${esc(tx(T.nosTitulo))}</h1>
             <p class="sub" data-aparece>${esc(tx(cl.historia))}</p></div>
           <div class="nos-collage">
             <figure class="nc-1" data-aparece="zoom"><img src="media/instagram/local-rivera.jpg" alt="${t('nos_local')}"><figcaption>${icono('ubicacion')} ${t('nos_local')}</figcaption></figure>
@@ -52,7 +52,7 @@ PAGINAS.contacto = {
     const d = Datos.get(), c = d.config, T = d.textos, cl = d.claudio, tels = c.telefonos.filter(Boolean);
     const mapa = 'https://maps.google.com/maps?q=' + encodeURIComponent(c.mapa || 'Rivera, Uruguay') + '&z=14&output=embed';
     return `<section class="bloque contacto"><div class="contenedor contacto-in">
-        <div class="ct-txt"><span class="etiqueta"><i></i>${t('p_contacto')}</span><h1 class="titulo" data-dividir>${esc(tx(T.contactoTitulo))}</h1><p class="sub">${esc(tx(T.contactoSub))}</p>
+        <div class="ct-txt"><span class="etiqueta"><i></i>${t('p_contacto')}</span><h1 class="titulo" data-dividir${ed('g:textos.contactoTitulo')}>${esc(tx(T.contactoTitulo))}</h1><p class="sub"${ed('g:textos.contactoSub')}>${esc(tx(T.contactoSub))}</p>
           <a class="ct-claudio" href="${waLink(msjClaudio())}" target="_blank" rel="noopener" data-aparece><span class="ct-logo">${iconoDP({ cls: 'ct-dp' })}</span><div><b>Drones del Pampa</b><span>${IDIOMA === 'pt' ? 'Nossa equipe responde no mesmo dia' : 'Nuestro equipo te responde en el día'}</span></div><span class="btn btn-wa btn-chico">${icono('wa')} WhatsApp</span></a>
           <div class="ct-datos">
             <div data-aparece>${icono('telefono')}<small>${t('c_telefonos')}</small>${tels.map(n => `<a href="tel:${n.replace(/\D/g, '')}">${esc(n)}</a>`).join('')}</div>
